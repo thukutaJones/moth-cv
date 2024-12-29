@@ -30,7 +30,7 @@ const CvBuilderTopBar = () => {
               </Link>
               {index !== pages.length - 1 && (
                 <div
-                  className={`h-1 w-5 md:w-[130px] ${
+                  className={`h-1 w-5 md:w-[100px] ${
                     pages.findIndex((page) => page.route === route) <=
                     pages.findIndex((page) => page.route === currentRoute) - 1
                       ? "bg-blue-600"

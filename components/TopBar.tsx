@@ -62,9 +62,9 @@ const TopBar = () => {
             <p>Contact Us</p>
           </Link>
         </nav>
-        <div className="px-4 bg-blue-600 py-1 flex items-center justify-center rounded-lg cursor-pointer">
+        <Link href='/sign-in' className="px-4 bg-blue-600 py-1 flex items-center justify-center rounded-lg cursor-pointer">
           <p className="text-white font-sans">Sign In</p>
-        </div>
+        </Link>
       </div>
     </div>
   );

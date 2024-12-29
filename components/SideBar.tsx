@@ -17,7 +17,7 @@ const SideBar = () => {
   return (
     <div className='h-full  w-[5%] bg-white hidden md:flex flex-col gap-8 overflow-hidden'>
         <nav className="flex flex-col gap-12 w-full items-center">
-        <Link href="/home" className="mt-10">
+        <Link href="/home" className="mt-20">
           <RiHome5Fill
             className={`${
               currentPath === "/home" ? "text-blue-600" : "text-gray-400"

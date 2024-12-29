@@ -1,11 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import HomeMobileMenu from "./HomeMobileMenu";
+import { retriveUserData } from "@/constants/retriveUserData";
+import axios from "axios";
+import { baseUrl } from "@/constants/baseUrl";
+import { getUserIdFromCookie } from "@/constants/getUserId";
 
-const HomeTopBar = () => {
+const HomeTopBar = async () => {
+  const user: any = await retriveUserData();
   return (
-    <div className="w-full h-full flex justify-between items-center px-8 bg-white">
-      <Link href="/" className="flex flex-row gap-1 items-center ">
+    <div className="w-full h-full flex justify-between items-center px-4 md:px-8 bg-white">
+      <div className="flex flex-row gap-1 items-center ">
         <Image
           src="/logo.png"
           height={50}
@@ -13,17 +18,23 @@ const HomeTopBar = () => {
           alt="Logo"
           className="h-8 w-8 object-contain hidden md:flex"
         />
-        <h1 className="text-2xl md:text-3xl text-blue-600 font-bold">MothCV</h1>
-      </Link>
+        <div className="flex gap-1 items-center">
+          <HomeMobileMenu />
+          <h1 className="text-2xl md:text-3xl text-blue-600 font-bold">
+            MothCV
+          </h1>
+        </div>
+      </div>
       <div className="w-[50%] h-full flex justify-end items-center gap-4">
         <div className="h-10 px-4 md:px-0 md:w-[30%] rounded-lg hover:scale-110 bg-yellow-400 flex items-center justify-center cursor-pointer">
           <p className="text-white font-sans">Upgrade</p>
         </div>
+
         <Image
-          src="/moth.jpeg"
+          src={user?.profilePhoto}
           width={80}
           height={80}
-          alt="profile_photoF"
+          alt="profile_photo"
           className="h-12 w-12 rounded-full border-2 border-blue-500 cursor-pointer"
         />
       </div>

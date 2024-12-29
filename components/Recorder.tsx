@@ -1,125 +1,96 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import activeAssistantIcon from "@/img/active.gif";
-import notActiveAssistantIcon from "@/img/notactive.png";
-import { useFormStatus } from "react-dom";
+import { IoIosMic } from "react-icons/io";
 
 const mimeType = "audio/webm";
 
 function Recorder({ uploadAudio }: { uploadAudio: (blob: Blob) => void }) {
   const mediaRecorder = useRef<MediaRecorder | null>(null);
-  const { pending } = useFormStatus();
   const [permission, setPermission] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
-  const [recordingStatus, setRecordingStatus] = useState("inactive");
+  const [isRecording, setIsRecording] = useState(false);
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [audio, setAudio] = useState<string | null>(null);
 
   useEffect(() => {
     getMicrophonePermission();
+
+    // Cleanup the stream on unmount
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+    };
   }, []);
 
   const getMicrophonePermission = async () => {
-    if ("MediaRecorder" in window) {
-      try {
-        const streamData = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-          video: false,
-        });
-        setPermission(true);
-        setStream(streamData);
-      } catch (err: any) {
-        alert(err.message);
-      }
-    } else {
+    if (!navigator?.mediaDevices?.getUserMedia) {
       alert("The MediaRecorder API is not supported in your browser.");
+      return;
+    }
+
+    try {
+      const streamData = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: false,
+      });
+      setPermission(true);
+      setStream(streamData);
+    } catch (err: any) {
+      console.error("Error accessing microphone:", err);
+      alert(err.message || "Failed to access the microphone.");
     }
   };
 
-  const startRecording = async () => {
-    if (mediaRecorder === null || stream === null) return;
+  const startRecording = () => {
+    if (!stream || !permission) {
+      alert("Microphone permission is required to record audio.");
+      return;
+    }
 
-    if (pending) return;
+    const activeAudio = new Audio("/active.mp3");
+    activeAudio.play();
 
-    setRecordingStatus("recording");
-    //create new Media recorder instance using the stream
-    const media = new MediaRecorder(stream, { mimeType: mimeType });
-    //set the MediaRecorder instance to the mediaRecorder ref
+    const media = new MediaRecorder(stream, { mimeType });
     mediaRecorder.current = media;
-    //invokes the start method to start the recording process
-    mediaRecorder.current.start();
+
     let localAudioChunks: Blob[] = [];
     mediaRecorder.current.ondataavailable = (event) => {
-      if (typeof event.data === "undefined") return;
-      if (event.data.size === 0) return;
-      localAudioChunks.push(event.data);
+      if (event.data.size > 0) {
+        localAudioChunks.push(event.data);
+      }
     };
-    setAudioChunks(localAudioChunks);
-  };
 
-  const stopRecording = () => {
-    if (mediaRecorder.current === null) return;
-
-    if (pending) return;
-
-    setRecordingStatus("inactive");
-    //stops the recording instance
-    mediaRecorder.current.stop();
     mediaRecorder.current.onstop = () => {
-      //creates a blob file from the audiochunks data
-      const audioBlob = new Blob(audioChunks, { type: mimeType });
-      //creates a playable URL from the blob file.
+      const audioBlob = new Blob(localAudioChunks, { type: mimeType });
       const audioUrl = URL.createObjectURL(audioBlob);
       setAudio(audioUrl);
       uploadAudio(audioBlob);
       setAudioChunks([]);
     };
+
+    mediaRecorder.current.start();
+    setIsRecording(true);
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorder.current && isRecording) {
+      const notActiveAudio = new Audio("/notactive.mp3");
+      notActiveAudio.play();
+
+      mediaRecorder.current.stop();
+      setIsRecording(false);
+    }
   };
 
   return (
-    <div className="flex items-center justify-center">
-      {!permission ? (
-        <button onClick={getMicrophonePermission} type="button">
-          Get Microphone
-        </button>
-      ) : null}
-
-      {pending && (
-        <Image
-          src={activeAssistantIcon}
-          alt="Recording"
-          width={350}
-          height={350}
-          onClick={stopRecording}
-          priority={true}
-          className="assistant grayscale"
-        />
+    <div onClick={!isRecording ? startRecording : stopRecording}>
+      {!isRecording ? (
+        <IoIosMic size={25} color="white" />
+      ) : (
+        <div className="w-6 h-6 border-t-2 border-r-2 border-white rounded-full animate-spin" />
       )}
-
-      {permission && recordingStatus === "inactive" && !pending ? (
-        <Image
-          src={notActiveAssistantIcon}
-          alt="Not Recording"
-          width={300}
-          height={300}
-          onClick={startRecording}
-          priority={true}
-          className="assistant cursor-pointer hover:scale-110 duration-150 transition-all ease-in-out h-40 w-40 object-contain"
-        />
-      ) : null}
-      {recordingStatus === "recording" ? (
-        <Image
-          src={activeAssistantIcon}
-          alt="Recording"
-          width={300}
-          height={300}
-          onClick={stopRecording}
-          priority={true}
-          className="assistant cursor-pointer hover:scale-110 duration-150 transition-all ease-in-out h-40 w-40 object-contain"
-        />
-      ) : null}
     </div>
   );
 }

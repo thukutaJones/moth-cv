@@ -7,11 +7,11 @@ export const personalDetailsData = [
 ];
 
 export const pages = [
-  {name: "Select Template", route: "/cv-builder"},
-  {name: "Personal Details", route: "/cv-builder/personal-details"},
+  {name: "Personal Details", route: "/cv-builder"},
   {name: "Work Experience", route: "/cv-builder/work-experience"},
   {name: "Eduation", route: "/cv-builder/education-background"},
   {name: "Skills", route: "/cv-builder/skills"},
   {name: "Objective", route: "/cv-builder/objective"},
   {name: "References", route: "/cv-builder/references"},
+  {name: "Export CV", route: "/cv-builder/export-cv"},
 ];

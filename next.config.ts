@@ -9,6 +9,14 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "icon-library.com",
+      },
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**",
       }
     ],
   },

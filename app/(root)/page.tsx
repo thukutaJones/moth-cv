@@ -16,9 +16,9 @@ const Home = () => {
             Land your dream job with MothCV's tailored job recommendations,
             professional resume builders, and interview prep tools.
           </p>
-          <button className="px-4 py-2 bg-blue-600 mt-4 rounded-lg">
+          <Link href='/sign-in' className="px-4 py-2 bg-blue-600 mt-4 rounded-lg">
             <p className="font-sans">Get Started</p>
-          </button>
+          </Link>
         </div>
       </div>
       <section className="p-6 md:p-10 mt-8 md:mt-20 bg-white w-full flex flex-col items-center">

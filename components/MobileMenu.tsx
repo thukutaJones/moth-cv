@@ -36,7 +36,7 @@ const MobileMenu = () => {
             className="mt-4"
             onClick={() => {
               setIsOpen(false);
-              router.push("/dashboard");
+              router.push("/");
             }}
           >
             Home
@@ -44,7 +44,7 @@ const MobileMenu = () => {
           <button
             onClick={() => {
               setIsOpen(false);
-              router.push("/my-classroom");
+              router.push("/services");
             }}
           >
             Services
@@ -52,7 +52,7 @@ const MobileMenu = () => {
           <button
             onClick={() => {
               setIsOpen(false);
-              router.push("/messages");
+              router.push("/about");
             }}
           >
             About
@@ -60,7 +60,7 @@ const MobileMenu = () => {
           <button
             onClick={() => {
               setIsOpen(false);
-              router.push("/notifications");
+              router.push("/contact-us");
             }}
           >
             Contct Us

@@ -1,13 +1,16 @@
-import React from "react";
+"use client";
 
-const Message = ({ from }: { from: number }) => {
+import React, { useState } from "react";
+
+const Message = ({ data }: { data: { role: string; content: string } }) => {
   return (
     <div
-      className={`w-full flex ${from % 2 ? "justify-end" : "justify-start"}`}
+      className={`w-full flex ${
+        data?.role === "system" ? "justify-start" : "justify-end"
+      }`}
     >
-      <p className="w-[80%] md:w-[48%] text-sm px-4 py-2 bg-white rounded-lg text-gray-600 font-sans">
-        bfjhbfhj fjhfbjhff hjbhjhbhhbjhhb hdjbdj dhdbhjdd dhdjbdjbd ddbjdbjdbh
-        djdbdhj djdhbjd dhdjb
+      <p className="w-[80%] md:w-[60%] text-sm px-4 py-2 bg-white rounded-lg text-gray-600 font-sans">
+        {data?.content}
       </p>
     </div>
   );
