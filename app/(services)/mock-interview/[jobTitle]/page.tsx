@@ -8,7 +8,7 @@ import { FaPlay } from "react-icons/fa";
 import prompts from "@/constants/prompts";
 import Recorder from "@/components/Recorder";
 import { useFormState } from "react-dom";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { getUserIdFromCookie } from "@/constants/getUserId";
 
 interface IMessage {
@@ -18,8 +18,8 @@ interface IMessage {
 
 const mimeType = "audio/webm";
 
-const Mock = ({ params }: { params: { jobTitle: string } }) => {
-  const { jobTitle } = use<{ jobTitle: string }>(params);
+const Mock = () => {
+  const jobTitle = usePathname()?.split("/")[2]
   const [conversation, setConversation] = useState<IMessage[]>([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPrompting, setIsPrompting] = useState<boolean>(false);
@@ -173,7 +173,7 @@ const Mock = ({ params }: { params: { jobTitle: string } }) => {
             className="h-12 w-12 rounded-full bg-green-500 hover:scale-110 flex items-center justify-center"
             onClick={async () => {
               if (!conversation?.length) {
-                const prompt = prompts()?.reporte;
+                const prompt = prompts(jobTitle)?.reporte;
                 await promptAi(prompt);
               }
             }}

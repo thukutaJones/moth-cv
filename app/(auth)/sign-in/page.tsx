@@ -9,9 +9,7 @@ const SignIn = () => {
   const signInWithGoogle = async () => {
     try {
       window.location.href = `${baseUrl}/api/auth/google-signin`;
-    } catch (error: any) {
-      alert(error.message);
-      console.log(error);
+    } catch (error) {
     }
   };
   return (
