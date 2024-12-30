@@ -7,7 +7,6 @@ import React, { useState, useEffect, use, useRef } from "react";
 import { FaPlay } from "react-icons/fa";
 import prompts from "@/constants/prompts";
 import Recorder from "@/components/Recorder";
-import { useFormState } from "react-dom";
 import { usePathname, useRouter } from "next/navigation";
 import { getUserIdFromCookie } from "@/constants/getUserId";
 
@@ -15,8 +14,6 @@ interface IMessage {
   role: string;
   content: string;
 }
-
-const mimeType = "audio/webm";
 
 const Mock = () => {
   const jobTitle = usePathname()?.split("/")[2]
@@ -33,7 +30,7 @@ const Mock = () => {
 
   const router = useRouter();
 
-  const promptAi = async (prompt: string) => {
+  const intitiateInterview = async (prompt: string) => {
     try {
       setIsProcessing(true);
       const activeAudio = new Audio("/active.mp3");
@@ -41,7 +38,7 @@ const Mock = () => {
       setIsPrompting(true);
       const userId = await getUserIdFromCookie()
       const res = await axios.post(
-        `${baseUrl}/api/prompt/${userId}`,
+        `${baseUrl}/api/interview/initiate/${userId}`,
         { prompt }
       );
 
@@ -101,12 +98,13 @@ const Mock = () => {
     try {
       const userId = await getUserIdFromCookie()
       const res = await axios.post(
-        `${baseUrl}/interview/respond/${userId}/${interviewId}`,
+        `${baseUrl}/api/interview/proceed/${userId}/${interviewId}`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
+          withCredentials: true
         }
       );
 
@@ -174,7 +172,7 @@ const Mock = () => {
             onClick={async () => {
               if (!conversation?.length) {
                 const prompt = prompts(jobTitle)?.reporte;
-                await promptAi(prompt);
+                await intitiateInterview(prompt);
               }
             }}
           >
@@ -221,8 +219,8 @@ const Mock = () => {
         {isProcessing && (
           <div className="absolute top-0 left-0 bg-opacity-70 w-full h-[90px] z-40 flex flex-col items-center justify-end">
             <div className="flex gap-2">
-              <p className="text-blue-600">processing</p>
-              <div className="w-5 h-5 border-t-2 border-r-2 border-blue-600 rounded-full animate-spin" />
+              <p className="text-green-500">processing</p>
+              <div className="w-5 h-5 border-t-2 border-r-2 border-green-500 rounded-full animate-spin" />
             </div>
           </div>
         )}

@@ -8,7 +8,7 @@ import { FcGoogle } from "react-icons/fc";
 const SignIn = () => {
   const signInWithGoogle = async () => {
     try {
-      window.location.href = `${baseUrl}/api/auth/google-signin`;
+      window.location.href = `http://localhost:7000/api/auth/google-signin`;
     } catch (error) {
     }
   };
