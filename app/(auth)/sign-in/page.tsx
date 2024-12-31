@@ -9,7 +9,9 @@ const SignIn = () => {
   const signInWithGoogle = async () => {
     try {
       window.location.href = `${baseUrl}/api/auth/google-signin`;
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error during Google Sign-In:", error);
+    }
   };
   return (
     <div className="min-h-screen flex-1 w-full relative">
