@@ -1,5 +1,6 @@
 "use client";
 
+import { baseUrl } from "@/constants/baseUrl";
 import Image from "next/image";
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
@@ -7,9 +8,8 @@ import { FcGoogle } from "react-icons/fc";
 const SignIn = () => {
   const signInWithGoogle = async () => {
     try {
-      window.location.href = `http://localhost:7000/api/auth/google-signin`;
-    } catch (error) {
-    }
+      window.location.href = `${baseUrl}/api/auth/google-signin`;
+    } catch (error) {}
   };
   return (
     <div className="min-h-screen flex-1 w-full relative">
