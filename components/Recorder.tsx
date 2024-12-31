@@ -16,7 +16,6 @@ function Recorder({ uploadAudio }: { uploadAudio: (blob: Blob) => void }) {
   useEffect(() => {
     getMicrophonePermission();
 
-    // Cleanup the stream on unmount
     return () => {
       if (stream) {
         stream.getTracks().forEach((track) => track.stop());
@@ -38,7 +37,6 @@ function Recorder({ uploadAudio }: { uploadAudio: (blob: Blob) => void }) {
       setPermission(true);
       setStream(streamData);
     } catch (err: any) {
-      console.error("Error accessing microphone:", err);
       alert(err.message || "Failed to access the microphone.");
     }
   };

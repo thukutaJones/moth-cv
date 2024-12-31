@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import FormField from "./FormField";
-import { SiGooglegemini } from "react-icons/si";
 import axios from "axios";
 import { baseUrl } from "@/constants/baseUrl";
 import { getUserIdFromCookie } from "@/constants/getUserId";
@@ -49,7 +48,6 @@ const EducationModal = ({
       await callBack();
       handleClose();
     } catch (error) {
-      console.log(error);
     } finally {
       setIsAdding(false);
     }

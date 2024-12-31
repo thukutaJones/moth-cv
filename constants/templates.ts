@@ -6,7 +6,6 @@ const Templates = async () => {
   try {
     const userId = await getUserIdFromCookie();
     const res = await axios.get(`${baseUrl}/api/cv-details/${userId}`);
-    console.log(res?.data?.details[0]);
     const {
       personalDetails,
       education,
@@ -15,7 +14,6 @@ const Templates = async () => {
       workExperience,
       proffessinalSummary,
     } = res?.data?.details;
-    console.log(personalDetails);
 
     const template_6 = `
     <!DOCTYPE html>
@@ -2704,7 +2702,6 @@ const Templates = async () => {
       template_8,
     };
   } catch (error) {
-    console.log(error);
     return {};
   }
 };

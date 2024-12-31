@@ -4,7 +4,6 @@ import { baseUrl } from "@/constants/baseUrl";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
-import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import AddReferencesMdal from "@/components/AddReferenceModal";
@@ -29,7 +28,6 @@ const References = () => {
       );
       setReferences(res?.data?.references?.references || []);
     } catch (error) {
-      console.log(error);
     } finally {
       setIsFetchingData(false);
     }
@@ -42,7 +40,7 @@ const References = () => {
     router.push("/cv-builder/export-cv");
   };
 
-  const handleBack = () => { 
+  const handleBack = () => {
     router.push("/cv-builder/objective");
   };
 
@@ -55,7 +53,6 @@ const References = () => {
       );
       fetchReferences();
     } catch (error: any) {
-      alert(error.message);
     } finally {
       setIsDeleting(false);
     }
@@ -93,7 +90,6 @@ const References = () => {
                       <br />
                       Adress: {reference?.address}
                     </p>
-                    
                   </div>
                   <div className="flex gap-2">
                     {isDeleting &&

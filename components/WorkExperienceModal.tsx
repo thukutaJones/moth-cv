@@ -49,8 +49,6 @@ const WorkExperienceModal = ({
       await callBack();
       handleClose();
     } catch (error) {
-      alert(error)
-      console.log(error);
     } finally {
       setIsAdding(false);
     }
@@ -70,8 +68,6 @@ const WorkExperienceModal = ({
       });
       setFormValues({ ...formValues, jobDescription: res.data?.description });
     } catch (error: any) {
-      console.log(error);
-      alert(error.message);
     } finally {
       setIsGettingDescription(false);
     }

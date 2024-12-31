@@ -72,7 +72,6 @@ const Mock = () => {
       ]);
       setInterviewId(res?.data?.interviewId);
     } catch (error) {
-      console.error(error);
     } finally {
       setIsPrompting(false);
     }
@@ -136,7 +135,6 @@ const Mock = () => {
         alert("Text-to-Speech is not supported in this browser.");
       }
     } catch (error) {
-      console.error("Error uploading audio:", error);
     }
   };
 

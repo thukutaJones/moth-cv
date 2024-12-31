@@ -1,6 +1,5 @@
 "use client";
 
-import CvPreview from "@/components/WorkExperienceModal";
 import FormField from "@/components/FormField";
 import { baseUrl } from "@/constants/baseUrl";
 import axios from "axios";
@@ -57,7 +56,6 @@ const PersonalDetails = () => {
         });
         setUserImage(personalDetails?.profilePhoto);
       } catch (error) {
-        alert(error);
       } finally {
         setIsFetchingData(false);
       }
@@ -91,7 +89,6 @@ const PersonalDetails = () => {
       );
       router.push("/cv-builder/work-experience");
     } catch (error) {
-      console.log(error);
     } finally {
       setIsSavingData(false);
     }

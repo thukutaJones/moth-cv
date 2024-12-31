@@ -4,7 +4,6 @@ import { baseUrl } from "@/constants/baseUrl";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
-import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import EducationModal from "@/components/EducationModal";
@@ -27,11 +26,8 @@ const Education = () => {
       const res = await axios.get(
         `${baseUrl}/api/cv-details/education/${userId}`
       );
-      console.log(res?.data?.education);
       setEducationBackgrounds(res?.data?.education?.education || []);
     } catch (error) {
-      alert(error)
-      console.log(error);
     } finally {
       setIsFetchingData(false);
     }
@@ -61,7 +57,6 @@ const Education = () => {
       );
       fetchEducationDetails();
     } catch (error: any) {
-      alert(error.message);
     } finally {
       setIsDeleting(false);
     }

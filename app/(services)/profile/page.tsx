@@ -50,7 +50,6 @@ const Profile = () => {
       await deleteCookie();await deleteCookie();
       router.replace("/sign-in");
     } catch (error) {
-      alert(error)
     } finally {
       setIsLoading(false);
     }

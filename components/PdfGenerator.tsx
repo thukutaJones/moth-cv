@@ -21,7 +21,6 @@ const PdfGenerator = ({
       }
 
       const templates = await Templates();
-      console.log(templates)
       const htmlContent = templates[template as keyof typeof templates] || "";
 
       const response = await axios.post(
@@ -46,7 +45,6 @@ const PdfGenerator = ({
         setPageError("Error exporting CV");
       }
     } catch (error) {
-        console.log(error)
       setPageError("Error exporting CV");
     } finally {
       setIsGenerating(false);

@@ -19,7 +19,6 @@ const MockInterview = () => {
       e.preventDefault();
       router.push(`/mock-interview/${formValues.jobTitle.replace(" ", "-")}`);
     } catch (error) {
-      console.log(error);
     } finally {
       setIsSubmitting(false);
     }

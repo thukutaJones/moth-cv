@@ -1,11 +1,9 @@
 "use client";
 
-import FormField from "@/components/FormField";
 import { baseUrl } from "@/constants/baseUrl";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
-import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import AddSkillModal from "@/components/AddSkillModal";
@@ -29,7 +27,6 @@ const Skills = () => {
       );
       setSkills(res?.data?.skills?.skills || []);
     } catch (error) {
-      console.log(error);
     } finally {
       setIsFetchingData(false);
     }
@@ -55,7 +52,6 @@ const Skills = () => {
       );
       fetchSkills();
     } catch (error: any) {
-      alert(error.message);
     } finally {
       setIsDeleting(false);
     }

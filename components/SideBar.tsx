@@ -3,10 +3,7 @@
 import Link from "next/link";
 import React from "react";
 import { RiHome5Fill } from "react-icons/ri";
-import { IoMdNotifications } from "react-icons/io";
-import { HiDocumentReport } from "react-icons/hi";
 import { CgProfile } from "react-icons/cg";
-import { MdCamera } from "react-icons/md";
 import { usePathname } from "next/navigation";
 import { TbFileDescription, TbFileCv } from "react-icons/tb"
 import { LiaHandshake } from "react-icons/lia";

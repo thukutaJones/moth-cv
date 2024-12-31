@@ -4,7 +4,6 @@ import { pages } from "@/constants/createCVFields";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { BsPersonCircle } from "react-icons/bs";
 
 const CvBuilderTopBar = () => {
   const currentRoute = usePathname();

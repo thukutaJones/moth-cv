@@ -1,12 +1,10 @@
 "use client";
 
-import FormField from "@/components/FormField";
 import WorkExperienceModal from "@/components/WorkExperienceModal";
 import { baseUrl } from "@/constants/baseUrl";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
-import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { getUserIdFromCookie } from "@/constants/getUserId";
@@ -25,14 +23,12 @@ const WorkExperience = () => {
   const fetchWorkExperience = async () => {
     try {
       setIsFetchingData(true);
-      const userId = await getUserIdFromCookie()
+      const userId = await getUserIdFromCookie();
       const res = await axios.get(
         `${baseUrl}/api/cv-details/work-experience/${userId}`
       );
       setWorkExperiences(res?.data?.workExperience?.workExperience || []);
     } catch (error) {
-      alert(error)
-      console.log(error);
     } finally {
       setIsFetchingData(false);
     }
@@ -56,13 +52,12 @@ const WorkExperience = () => {
   ) => {
     setIsDeleting(true);
     try {
-      const userId = await getUserIdFromCookie()
+      const userId = await getUserIdFromCookie();
       await axios.delete(
         `${baseUrl}/api/cv-details/work-experience/${userId}/${jobTitle}/${company}/${startDate}`
       );
       fetchWorkExperience();
     } catch (error: any) {
-      alert(error.message);
     } finally {
       setIsDeleting(false);
     }

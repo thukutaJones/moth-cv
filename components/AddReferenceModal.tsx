@@ -47,7 +47,6 @@ const AddReferencesMdal = ({
       await callBack();
       handleClose();
     } catch (error) {
-      console.log(error);
     } finally {
       setIsAdding(false);
     }

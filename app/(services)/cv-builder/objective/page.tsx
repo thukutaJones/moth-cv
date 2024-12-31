@@ -1,12 +1,8 @@
 "use client";
 
-import FormField from "@/components/FormField";
 import { baseUrl } from "@/constants/baseUrl";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa6";
-import { CiEdit } from "react-icons/ci";
-import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { SiGooglegemini } from "react-icons/si";
 import EnterJobTitle from "@/components/EnterJobTitleModal";
@@ -27,13 +23,10 @@ const ProfessionalSummary = () => {
       const res = await axios.get(
         `${baseUrl}/api/cv-details/professional-summary/${userId}`
       );
-      console.log(res?.data?.professionalSummary);
       setProfessionalSummary(
         res?.data?.professionalSummary?.professionalSummary || ""
       );
     } catch (error) {
-      alert(error)
-      console.log(error);
     } finally {
       setIsFetchingData(false);
     }
@@ -55,8 +48,7 @@ const ProfessionalSummary = () => {
       );
       router.push("/cv-builder/references");
     } catch (error) {
-      alert(error)
-      console.log(error);
+
     } finally {
       setIsAdding(false);
     }
