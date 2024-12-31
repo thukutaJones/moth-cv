@@ -41,7 +41,7 @@ const PersonalDetails = () => {
     const fetchPersonalDetails = async () => {
       try {
         setIsFetchingData(true);
-        const userId = await getUserIdFromCookie()
+        const userId = await getUserIdFromCookie();
         const res = await axios.get(
           `${baseUrl}/api/cv-details/personal-details/${userId}`
         );
@@ -55,7 +55,7 @@ const PersonalDetails = () => {
           nationality: personalDetails?.nationality || "",
           address: personalDetails?.address || "",
         });
-        setUserImage(personalDetails?.pic);
+        setUserImage(personalDetails?.profilePhoto);
       } catch (error) {
         alert(error);
       } finally {
@@ -76,9 +76,10 @@ const PersonalDetails = () => {
       formData.append("nationality", formValues.nationality);
       if (file && !userImage) {
         formData.append("image", file);
+      } else {
+        formData.append("profilePhoto", userImage);
       }
-      console.log(formData);
-      const userId = await getUserIdFromCookie()
+      const userId = await getUserIdFromCookie();
       await axios.post(
         `${baseUrl}/api/cv-details/personal-details/${userId}`,
         formData,
@@ -126,8 +127,8 @@ const PersonalDetails = () => {
             />
             <Image
               src={
-                personalDetails?.pic && userImage
-                  ? personalDetails.pic
+                personalDetails?.profilePhoto && userImage
+                  ? personalDetails?.profilePhoto
                   : file
                   ? URL.createObjectURL(file)
                   : "/avatar.jpg"

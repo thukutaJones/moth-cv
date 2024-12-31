@@ -1,6 +1,5 @@
 "use client";
 
-import { baseUrl } from "@/constants/baseUrl";
 import Image from "next/image";
 import React from "react";
 import { FcGoogle } from "react-icons/fc";

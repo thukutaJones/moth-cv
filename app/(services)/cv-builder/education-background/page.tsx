@@ -30,6 +30,7 @@ const Education = () => {
       console.log(res?.data?.education);
       setEducationBackgrounds(res?.data?.education?.education || []);
     } catch (error) {
+      alert(error)
       console.log(error);
     } finally {
       setIsFetchingData(false);

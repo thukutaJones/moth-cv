@@ -63,7 +63,7 @@ const MobileMenu = () => {
               router.push("/contact-us");
             }}
           >
-            Contct Us
+            Contact Us
           </button>
           <p className="absolute bottom-4 text-sm text-center p-4 text-gray-400">
             © 2024 MothCV, Inc.

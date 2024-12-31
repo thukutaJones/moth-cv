@@ -22,12 +22,8 @@ const AddSkillModal = ({
     e.preventDefault();
     setIsAdding(true);
     try {
-      const userId = await getUserIdFromCookie()
-      const payload = { skill, owner: userId };
-      await axios.post(
-        `${baseUrl}/api/cv-details/skills/${userId}`,
-        payload
-      );
+      const userId = await getUserIdFromCookie();
+      await axios.post(`${baseUrl}/api/cv-details/skills/${userId}`, { skill });
       await callBack();
       handleClose();
     } catch (error) {

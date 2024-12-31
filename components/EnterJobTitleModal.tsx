@@ -23,13 +23,14 @@ const EnterJobTitle = ({
     try {
       const payload = { jobTitle };
       const res = await axios.post(
-        `${baseUrl}/api/prompt/get/professional-summary`,
+        `${baseUrl}/api/cv-details/professional-summary/get/professional-summary`,
         payload
       );
       
       callBack(res.data.professionalSummary);
       handleClose();
     } catch (error) {
+      alert(error)
       console.log(error);
     } finally {
       setIsAdding(false);

@@ -4,7 +4,6 @@ import { getUserIdFromCookie } from "./getUserId";
 
 const Templates = async () => {
   try {
-    console.log("in");
     const userId = await getUserIdFromCookie();
     const res = await axios.get(`${baseUrl}/api/cv-details/${userId}`);
     console.log(res?.data?.details[0]);
@@ -15,7 +14,7 @@ const Templates = async () => {
       skills,
       workExperience,
       proffessinalSummary,
-    } = res?.data?.details[0];
+    } = res?.data?.details;
     console.log(personalDetails);
 
     const template_6 = `
@@ -216,7 +215,7 @@ const Templates = async () => {
                                 <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: -20pt;">
                                     <div class="avoid-page-break">
                                         <p class="text">${
-                                          workDetail?.companyName
+                                          workDetail?.company
                                         }</p>
                                     </div>
                                     <div class="avoid-page-break">
@@ -508,7 +507,7 @@ const Templates = async () => {
                                             ?.slice(4)}</p>
                                             </div>
                                             <div class="avoid-page-break">
-                                                <p style="margin-top: -6pt;" class="text">${workDetail?.companyName?.toUpperCase()}</p>
+                                                <p style="margin-top: -6pt;" class="text">${workDetail?.company?.toUpperCase()}</p>
                                             </div>
                                                 ${
                                                   workDetail?.jobDescription
@@ -788,7 +787,7 @@ const Templates = async () => {
                                 <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: -20pt;">
                                     <div class="avoid-page-break">
                                         <p class="text">${
-                                          workDetail?.companyName
+                                          workDetail?.company
                                         }</p>
                                     </div>
                                     <div class="avoid-page-break">
@@ -1074,7 +1073,7 @@ const Templates = async () => {
                                             </div>
                                             <div class="avoid-page-break">
                                                 <h3 style="font-family: Helvetica; margin-top: -10pt;"><b>${
-                                                  workDetail?.companyName
+                                                  workDetail?.company
                                                 }</b></h3>
                                             </div>
                                                 ${
@@ -1126,7 +1125,7 @@ const Templates = async () => {
                                                 : ""
                                             }
                                             ${
-                                              reference?.companyName
+                                              reference?.company
                                                 ? `<div class="avoid-page-break"><p style="margin-top: -10pt;" class="text">${reference?.company}</p></div>`
                                                 : ""
                                             }
@@ -1352,14 +1351,14 @@ const Templates = async () => {
                             ? `<div style="margin-top: 0pt;">
                                     <div class="avoid-page-break"><h2 class="bg">
                                         <hr style="background-color: black; height: 1pt;">
-                                        <b>WORK HISTORY</b>
+                                        <b>WORK EXPERIENCE</b>
                                     </h2></div>
                                     ${workExperience
                                       ?.map(
                                         (workDetail: any) =>
                                           `
                                             <div class="avoid-page-break">
-                                                <h3 style="font-family: Helvetica;"><b>${
+                                                <h3 style="font-family: Helvetica; font-size: 12pt;"><b>${
                                                   workDetail?.jobTitle
                                                 }</b> - ${new Date(
                                             workDetail?.startDate
@@ -1372,8 +1371,8 @@ const Templates = async () => {
                                             ?.slice(4)}</h3>
                                             </div>
                                             <div class="avoid-page-break">
-                                                <h3 style="font-family: Helvetica; margin-top: -10pt;"><b>${
-                                                  workDetail?.companyName
+                                                <h3 style="font-family: Helvetica; margin-top: -10pt; font-size: 14pt;"><b>${
+                                                  workDetail?.company
                                                 }</b></h3>
                                             </div>
                                                 ${
@@ -1386,7 +1385,7 @@ const Templates = async () => {
                                                                   description: any
                                                                 ) =>
                                                                   `<div class="avoid-page-break">
-                                                                        <li class="text" style="margin-top: 5pt;">${description?.slice(
+                                                                        <li class="text" style="margin-top: 5pt; line-height: 1.2;">${description?.slice(
                                                                           1
                                                                         )}</li>
                                                                     </div>`
@@ -1672,7 +1671,7 @@ const Templates = async () => {
                                             .slice(4)}</p>
                                             </div>
                                             <div class="avoid-page-break">
-                                                <p style="font-family: Helvetica; margin-top: -10pt;">${workDetail?.companyName?.toUpperCase()}</p>
+                                                <p style="font-family: Helvetica; margin-top: -10pt;">${workDetail?.company?.toUpperCase()}</p>
                                             </div>
                                                 ${
                                                   workDetail?.jobDescription
@@ -1721,7 +1720,7 @@ const Templates = async () => {
                                             }
                                             ${
                                               reference?.company
-                                                ? `<div class="avoid-page-break"><p class="text" style="margin-top: -10pt;">${reference.companyName}</p></div>`
+                                                ? `<div class="avoid-page-break"><p class="text" style="margin-top: -10pt;">${reference.company}</p></div>`
                                                 : ""
                                             }
                                             ${
@@ -1968,7 +1967,7 @@ const Templates = async () => {
                                             ?.slice(4)}</h3>
                                             </div>
                                             <div class="avoid-page-break">
-                                                <p style="font-family: Helvetica; margin-top: -10pt;">${workDetail?.companyName?.toUpperCase()}</p>
+                                                <p style="font-family: Helvetica; margin-top: -10pt;">${workDetail?.company?.toUpperCase()}</p>
                                             </div>
                                                 ${
                                                   workDetail?.jobDescription
@@ -2268,13 +2267,13 @@ const Templates = async () => {
                             (workDetail: any) =>
                               `
                                 ${
-                                  workDetail?.companyName
+                                  workDetail?.company
                                     ? `
                                             <div style="display: flex; flex-direction: row; align-items: center; margin-top: -10pt;">
                                                     <div style="width: 20%; display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
                                                         <p class="text" style="font-weight: 800;">Organization</p><p style="margin-right: 20px;">:</p>
                                                     </div>
-                                                    <p class="text">${workDetail?.companyName}</p>
+                                                    <p class="text">${workDetail?.company}</p>
                                             </div>
                                         `
                                     : ""
@@ -2606,7 +2605,7 @@ const Templates = async () => {
                                             ?.slice(4)}</p>
                                             </div>
                                             <div class="avoid-page-break">
-                                                <p class="text" style="font-family: Helvetica; margin-top: -10pt;">${workDetail?.companyName?.toUpperCase()}</p>
+                                                <p class="text" style="font-family: Helvetica; margin-top: -10pt;">${workDetail?.company?.toUpperCase()}</p>
                                             </div>
                                                 ${
                                                   workDetail?.jobDescription

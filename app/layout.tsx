@@ -15,7 +15,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "MOTHCV",
-  description: "Get brilliant materials to boost your career",
+  description: "Get brilliant materials to boost your career with moth cv",
 };
 
 export default function RootLayout({

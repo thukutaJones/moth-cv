@@ -18,7 +18,7 @@ const UploadDeleteImage = ({
             Upload or Delete ?
           </p>
           <div
-            className="bg-blue-600 p-1 rounded-full cursor-pointer"
+            className="bg-green-500 p-1 rounded-full cursor-pointer"
             onClick={handleClose}
           >
             <IoClose size={20} />
@@ -32,7 +32,7 @@ const UploadDeleteImage = ({
             Delete
           </div>
           <div
-            className="px-4 bg-blue-600 text-white py-1 rounded-full cursor-pointer hover:scale-105"
+            className="px-4 bg-green-500 text-white py-1 rounded-full cursor-pointer hover:scale-105"
             onClick={handleUpload}
           >
             Upload

@@ -31,6 +31,7 @@ const WorkExperience = () => {
       );
       setWorkExperiences(res?.data?.workExperience?.workExperience || []);
     } catch (error) {
+      alert(error)
       console.log(error);
     } finally {
       setIsFetchingData(false);
@@ -49,7 +50,7 @@ const WorkExperience = () => {
   };
 
   const handleDelete = async (
-    joTitle: string,
+    jobTitle: string,
     company: string,
     startDate: string
   ) => {
@@ -57,7 +58,7 @@ const WorkExperience = () => {
     try {
       const userId = await getUserIdFromCookie()
       await axios.delete(
-        `${baseUrl}/api/cv-details/work-experience/${userId}/${joTitle}/${company}/${startDate}`
+        `${baseUrl}/api/cv-details/work-experience/${userId}/${jobTitle}/${company}/${startDate}`
       );
       fetchWorkExperience();
     } catch (error: any) {
@@ -90,7 +91,7 @@ const WorkExperience = () => {
                   >
                     <p className="font-sans overflow-clip whitespace-nowrap text-ellipsis">
                       <span className="font-bold">{experience?.jobTitle}</span>{" "}
-                      at {experience?.companyName}
+                      at {experience?.company}
                     </p>
                     <p className="text-gray-400 text-xs">
                       {new Date(experience?.startDate).toDateString()?.slice(4)}{" "}
@@ -100,7 +101,7 @@ const WorkExperience = () => {
                   <div className="flex gap-2">
                     {isDeleting &&
                     selectedExpForDel?.jobTitle === experience?.jobTitle &&
-                    selectedExpForDel?.company === experience?.companyName &&
+                    selectedExpForDel?.company === experience?.company &&
                     selectedExpForDel?.startDate === experience?.startDate ? (
                       <div className="w-6 h-6 border-t-2 border-r-2 border-red-500 rounded-full animate-spin" />
                     ) : (
@@ -110,12 +111,12 @@ const WorkExperience = () => {
                           setSelectedExpForDel({
                             ...selectedExpForDel,
                             jobTitle: experience?.jobTitle,
-                            company: experience?.companyName,
+                            company: experience?.company,
                             startDate: experience?.startDate,
                           });
                           await handleDelete(
                             experience?.jobTitle,
-                            experience?.companyName,
+                            experience?.company,
                             experience?.startDate
                           );
                         }}

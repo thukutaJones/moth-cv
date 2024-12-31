@@ -13,22 +13,24 @@ interface FormValues {
   name: string;
   phone: string;
   email: string;
+  address: string;
 }
 
 const AddReferencesMdal = ({
   handleClose,
   callBack,
-  reference
+  reference,
 }: {
   handleClose: () => void;
   callBack: () => Promise<void>;
   reference: any;
 }) => {
   const [formValues, setFormValues] = useState<FormValues>({
-    company: reference?.company,
-    name: reference?.name,
-    phone: reference?.phone,
-    email: reference?.email,
+    company: reference?.company || "",
+    name: reference?.name || "",
+    phone: reference?.phone || "",
+    email: reference?.email || "",
+    address: reference?.address || "",
   });
   const [isAdding, setIsAdding] = useState<boolean>(false);
 
@@ -36,7 +38,7 @@ const AddReferencesMdal = ({
     e.preventDefault();
     setIsAdding(true);
     try {
-      const userId = await getUserIdFromCookie()
+      const userId = await getUserIdFromCookie();
       const payload = { ...formValues, owner: userId };
       await axios.post(
         `${baseUrl}/api/cv-details/references/${userId}`,
@@ -114,7 +116,19 @@ const AddReferencesMdal = ({
               })
             }
           />
-
+          <FormField
+            wid="w-full mt-4"
+            title="Address"
+            type="address"
+            placeholder="P/Box 201, Luwinga, Mzuzu"
+            value={formValues.address}
+            handleChangeText={(event: any) =>
+              setFormValues({
+                ...formValues,
+                address: event.target.value,
+              })
+            }
+          />
           <button
             className="mt-6 w-full bg-blue-600 text-white p-2 rounded-lg flex items-center justify-center"
             type="submit"

@@ -2,9 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import HomeMobileMenu from "./HomeMobileMenu";
 import { retriveUserData } from "@/constants/retriveUserData";
-import axios from "axios";
-import { baseUrl } from "@/constants/baseUrl";
-import { getUserIdFromCookie } from "@/constants/getUserId";
 
 const HomeTopBar = async () => {
   const user: any = await retriveUserData();
@@ -29,14 +26,15 @@ const HomeTopBar = async () => {
         <div className="h-10 px-4 md:px-0 md:w-[30%] rounded-lg hover:scale-110 bg-yellow-400 flex items-center justify-center cursor-pointer">
           <p className="text-white font-sans">Upgrade</p>
         </div>
-
-        <Image
-          src={user?.profilePhoto}
-          width={80}
-          height={80}
-          alt="profile_photo"
-          className="h-12 w-12 rounded-full border-2 border-blue-500 cursor-pointer"
-        />
+        <Link href="/profile">
+          <Image
+            src={user?.profilePhoto}
+            width={80}
+            height={80}
+            alt="profile_photo"
+            className="h-12 w-12 rounded-full border-2 border-blue-500 cursor-pointer"
+          />
+        </Link>
       </div>
     </div>
   );

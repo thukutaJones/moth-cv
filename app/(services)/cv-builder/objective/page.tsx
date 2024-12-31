@@ -13,25 +13,26 @@ import EnterJobTitle from "@/components/EnterJobTitleModal";
 import { getUserIdFromCookie } from "@/constants/getUserId";
 
 const ProfessionalSummary = () => {
-  const [proffessinalSummary, setProffessinalSummary] = useState<string>("");
+  const [professionalSummary, setProfessionalSummary] = useState<string>("");
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [isFetchingData, setIsFetchingData] = useState<boolean>(false);
   const [getProfessionalSummaryToggle, setGetProfessionalSummaryToggle] =
     useState<boolean>(false);
   const router = useRouter();
 
-  const fetchProffessinalSummary = async () => {
+  const fetchprofessionalSummary = async () => {
     try {
       setIsFetchingData(true);
       const userId = await getUserIdFromCookie();
       const res = await axios.get(
-        `${baseUrl}/api/cv-details/proffessional-summary/${userId}`
+        `${baseUrl}/api/cv-details/professional-summary/${userId}`
       );
-      console.log(res?.data?.proffessinalSummary);
-      setProffessinalSummary(
-        res?.data?.proffessinalSummary?.proffessinalSummary || ""
+      console.log(res?.data?.professionalSummary);
+      setProfessionalSummary(
+        res?.data?.professionalSummary?.professionalSummary || ""
       );
     } catch (error) {
+      alert(error)
       console.log(error);
     } finally {
       setIsFetchingData(false);
@@ -39,7 +40,7 @@ const ProfessionalSummary = () => {
   };
 
   useEffect(() => {
-    fetchProffessinalSummary();
+    fetchprofessionalSummary();
   }, []);
 
   const handleNext = async (e: any) => {
@@ -47,16 +48,14 @@ const ProfessionalSummary = () => {
     setIsAdding(true);
     const userId = await getUserIdFromCookie();
     try {
-      const payload = {
-        proffessinalSummary,
-        owner: userId,
-      };
+      
       await axios.post(
-        `${baseUrl}/api/cv-details/proffessional-summary/${userId}`,
-        payload
+        `${baseUrl}/api/cv-details/professional-summary/${userId}`,
+        {professionalSummary}
       );
       router.push("/cv-builder/references");
     } catch (error) {
+      alert(error)
       console.log(error);
     } finally {
       setIsAdding(false);
@@ -92,8 +91,8 @@ const ProfessionalSummary = () => {
               required
               rows={5}
               cols={50}
-              value={proffessinalSummary}
-              onChange={(e) => setProffessinalSummary(e.target.value)}
+              value={professionalSummary}
+              onChange={(e) => setProfessionalSummary(e.target.value)}
               className="w-full h-40 bg-transparent border border-gray-300 focus:border-blue-600 outline-none focus:outline-none px-4 py-2 text-sm text-gray-600 mt-2 scroll-container"
             />
 
@@ -125,7 +124,7 @@ const ProfessionalSummary = () => {
         {getProfessionalSummaryToggle && (
           <EnterJobTitle
             handleClose={() => setGetProfessionalSummaryToggle(false)}
-            callBack={(text: string) => setProffessinalSummary(text)}
+            callBack={(text: string) => setProfessionalSummary(text)}
           />
         )}
       </section>

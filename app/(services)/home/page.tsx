@@ -55,7 +55,7 @@ const Home = async() => {
       </p>
       <div className="w-full flex flex-col md:flex-row gap-4 flex-wrap flex-1 mt-4">
         {interviewTips?.map((tip: any, index: number) => (
-          <div className={`w-full md:w-[24%] ${colors[Math.floor(Math.random() * 3) + 1]} p-4 min-h-40`} key={index?.toString()}>
+          <div className={`w-full md:w-[24%] animated  wow flash ${colors[Math.floor(Math.random() * 3) + 1]} p-4 min-h-40`} key={index?.toString()}>
             <p className="text-sm text-black font-sans font-bold">{tip?.title}</p>
             {
               tip?.points?.map((point: string) => (

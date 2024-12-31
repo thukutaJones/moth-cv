@@ -8,7 +8,7 @@ const FormField = ({
   handleChangeText,
   type,
 }: {
-  wid: string;
+  wid?: string;
   title: string;
   placeholder: string;
   value: string;

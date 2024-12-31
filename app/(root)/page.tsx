@@ -9,10 +9,10 @@ const Home = () => {
     <div className="mt-[80px]">
       <div className="w-full flex items-center justify-center p-4 md:p-16">
         <div className="w-full md:w-[50%] flex flex-col items-center justify-cenetr">
-          <p className="text-4xl text-black font-bold text-center">
+          <p className="text-4xl text-black font-bold text-center animated  wow fadeInLeft">
             How do you want to grow your career?
           </p>
-          <p className="mt-4 text-center text-gray-600 text-sm font-sans">
+          <p className="mt-4 text-center text-gray-600 text-sm font-sans animated  wow fadeInRight">
             Land your dream job with MothCV's tailored job recommendations,
             professional resume builders, and interview prep tools.
           </p>
@@ -23,7 +23,7 @@ const Home = () => {
       </div>
       <section className="p-6 md:p-10 mt-8 md:mt-20 bg-white w-full flex flex-col items-center">
         <h2 className="text-3xl font-bold text-gray-700 text-center">What we offer?</h2>
-        <div className="w-full md:w-[80%]">
+        <div className="w-full md:w-[80%]" >
           {
             cardsData?.map((item: any, index: number) => (
               <HomeCard key={index?.toString()} data={item} index={index}/>

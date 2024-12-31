@@ -42,7 +42,7 @@ const References = () => {
     router.push("/cv-builder/export-cv");
   };
 
-  const handleBack = () => {
+  const handleBack = () => { 
     router.push("/cv-builder/objective");
   };
 
@@ -90,7 +90,10 @@ const References = () => {
                       Cell: {reference?.phone}
                       <br />
                       E-mail: {reference?.email}
+                      <br />
+                      Adress: {reference?.address}
                     </p>
+                    
                   </div>
                   <div className="flex gap-2">
                     {isDeleting &&

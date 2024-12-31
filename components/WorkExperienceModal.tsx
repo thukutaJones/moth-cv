@@ -13,7 +13,7 @@ interface FormValues {
   startDate: any;
   endDate: any;
   jobDescription: string;
-  companyName: string;
+  company: string;
 }
 
 const WorkExperienceModal = ({
@@ -30,7 +30,7 @@ const WorkExperienceModal = ({
     startDate: experience?.startDate ? new Date(experience?.startDate)?.toISOString()?.split("T")[0] : "",
     endDate: experience?.startDate ? new Date(experience?.endDate)?.toISOString()?.split("T")[0] : "",
     jobDescription: experience?.jobDescription || "• ",
-    companyName: experience?.companyName || "",
+    company: experience?.company || "",
   });
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [formError, setFormError] = useState<string>("");
@@ -42,14 +42,14 @@ const WorkExperienceModal = ({
     setIsAdding(true);
     try {
       const userId = await getUserIdFromCookie()
-      const payload = { ...formValues, owner: userId };
       await axios.post(
         `${baseUrl}/api/cv-details/work-experience/${userId}`,
-        payload
+        formValues
       );
       await callBack();
       handleClose();
     } catch (error) {
+      alert(error)
       console.log(error);
     } finally {
       setIsAdding(false);
@@ -65,7 +65,7 @@ const WorkExperienceModal = ({
         return;
       }
 
-      const res = await axios.post(`${baseUrl}/api/prompt/get/jobdescription`, {
+      const res = await axios.post(`${baseUrl}/api/cv-details/work-experience/get/description`, {
         jobTitle: formValues.jobTitle,
       });
       setFormValues({ ...formValues, jobDescription: res.data?.description });
@@ -130,11 +130,11 @@ const WorkExperienceModal = ({
             wid="w-full mt-2"
             title="Company Name"
             placeholder="DAPP Malawi"
-            value={formValues?.companyName}
+            value={formValues?.company}
             handleChangeText={(event: any) =>
               setFormValues({
                 ...formValues,
-                companyName: event.target.value,
+                company: event.target.value,
               })
             }
           />
