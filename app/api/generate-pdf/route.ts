@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     await page.setContent(htmlContent, { waitUntil: 'load' });
 
     const pdfBuffer = await page.pdf({
-      format: 'A4',
+      format: 'a4',
       printBackground: true,
     });
 
