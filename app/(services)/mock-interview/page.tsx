@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const MockInterview = () => {
   const [formValues, setFormValues] = useState({
@@ -23,6 +23,13 @@ const MockInterview = () => {
       setIsSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    const token: string = localStorage.getItem("moth-cv-token") || "";
+    if (!token) {
+      window.location.href = "/sign-in";
+    }
+  }, []);
   return (
     <div className="w-full h-full relative">
       <Image

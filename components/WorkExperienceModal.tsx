@@ -6,7 +6,7 @@ import FormField from "./FormField";
 import { SiGooglegemini } from "react-icons/si";
 import axios from "axios";
 import { baseUrl } from "@/constants/baseUrl";
-import { getUserIdFromCookie } from "@/constants/getUserId";
+import { getUserId } from "@/constants/getUserId";
 
 interface FormValues {
   jobTitle: string;
@@ -27,8 +27,12 @@ const WorkExperienceModal = ({
 }) => {
   const [formValues, setFormValues] = useState<FormValues>({
     jobTitle: experience?.jobTitle || "",
-    startDate: experience?.startDate ? new Date(experience?.startDate)?.toISOString()?.split("T")[0] : "",
-    endDate: experience?.startDate ? new Date(experience?.endDate)?.toISOString()?.split("T")[0] : "",
+    startDate: experience?.startDate
+      ? new Date(experience?.startDate)?.toISOString()?.split("T")[0]
+      : "",
+    endDate: experience?.startDate
+      ? new Date(experience?.endDate)?.toISOString()?.split("T")[0]
+      : "",
     jobDescription: experience?.jobDescription || "• ",
     company: experience?.company || "",
   });
@@ -41,10 +45,16 @@ const WorkExperienceModal = ({
     e.preventDefault();
     setIsAdding(true);
     try {
-      const userId = await getUserIdFromCookie()
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token);
       await axios.post(
         `${baseUrl}/api/cv-details/work-experience/${userId}`,
-        formValues
+        formValues,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await callBack();
       handleClose();
@@ -62,10 +72,18 @@ const WorkExperienceModal = ({
         setFormError("Please fill the Job title to generate description");
         return;
       }
-
-      const res = await axios.post(`${baseUrl}/api/cv-details/work-experience/get/description`, {
-        jobTitle: formValues.jobTitle,
-      });
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const res = await axios.post(
+        `${baseUrl}/api/cv-details/work-experience/get/description`,
+        {
+          jobTitle: formValues.jobTitle,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
+      );
       setFormValues({ ...formValues, jobDescription: res.data?.description });
     } catch (error: any) {
     } finally {
@@ -168,7 +186,9 @@ const WorkExperienceModal = ({
               className="flex gap-1 px-4 py-1 bg-blue-600 rounded-full items-center cursor-pointer"
               onClick={handleGetJobDescription}
             >
-              <p className="text-xs">{isGettingDescription ? 'Generating ' : 'Auto generate'}</p>
+              <p className="text-xs">
+                {isGettingDescription ? "Generating " : "Auto generate"}
+              </p>
               {isGettingDescription ? (
                 <div className="w-4 h-4 border-t-2 border-r-2 border-white rounded-full animate-spin" />
               ) : (

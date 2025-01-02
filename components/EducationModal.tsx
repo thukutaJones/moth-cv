@@ -5,7 +5,7 @@ import { IoClose } from "react-icons/io5";
 import FormField from "./FormField";
 import axios from "axios";
 import { baseUrl } from "@/constants/baseUrl";
-import { getUserIdFromCookie } from "@/constants/getUserId";
+import { getUserId } from "@/constants/getUserId";
 
 interface FormValues {
   degree: string;
@@ -39,11 +39,17 @@ const EducationModal = ({
     e.preventDefault();
     setIsAdding(true);
     try {
-      const userId = await getUserIdFromCookie()
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token);
       const payload = { ...formValues, owner: userId };
       await axios.post(
         `${baseUrl}/api/cv-details/education/${userId}`,
-        payload
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await callBack();
       handleClose();

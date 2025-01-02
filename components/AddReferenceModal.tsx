@@ -6,7 +6,7 @@ import FormField from "./FormField";
 import { SiGooglegemini } from "react-icons/si";
 import axios from "axios";
 import { baseUrl } from "@/constants/baseUrl";
-import { getUserIdFromCookie } from "@/constants/getUserId";
+import { getUserId } from "@/constants/getUserId";
 
 interface FormValues {
   company: string;
@@ -38,11 +38,17 @@ const AddReferencesMdal = ({
     e.preventDefault();
     setIsAdding(true);
     try {
-      const userId = await getUserIdFromCookie();
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token);
       const payload = { ...formValues, owner: userId };
       await axios.post(
         `${baseUrl}/api/cv-details/references/${userId}`,
-        payload
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       await callBack();
       handleClose();

@@ -2,12 +2,19 @@
 
 import PdfGenerator from "@/components/PdfGenerator";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 
 const CVBuilder = () => {
   const [template, setTemplate] = useState<string>("");
   const [pageError, setPageError] = useState<string>("");
+
+  useEffect(() => {
+    const token: string = localStorage.getItem("moth-cv-token") || "";
+    if (!token) {
+      window.location.href = "/sign-in";
+    }
+  }, []);
 
   return (
     <div>

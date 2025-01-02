@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import UploadDeleteImage from "@/components/UploadDeleteImage";
-import { getUserIdFromCookie } from "@/constants/getUserId";
+import { getUserId } from "@/constants/getUserId";
 
 interface FormValues {
   fullName: string;
@@ -40,9 +40,15 @@ const PersonalDetails = () => {
     const fetchPersonalDetails = async () => {
       try {
         setIsFetchingData(true);
-        const userId = await getUserIdFromCookie();
+        const token: string = localStorage.getItem("moth-cv-token") || "";
+        const userId = await getUserId(token);
         const res = await axios.get(
-          `${baseUrl}/api/cv-details/personal-details/${userId}`
+          `${baseUrl}/api/cv-details/personal-details/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+          }
         );
         const personalDetails = res?.data?.personalDetails?.personalDetails;
         setPersonalDetails(personalDetails);
@@ -77,13 +83,15 @@ const PersonalDetails = () => {
       } else {
         formData.append("profilePhoto", userImage);
       }
-      const userId = await getUserIdFromCookie();
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token);
       await axios.post(
         `${baseUrl}/api/cv-details/personal-details/${userId}`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -124,7 +132,7 @@ const PersonalDetails = () => {
             />
             <Image
               src={
-                personalDetails?.profilePhoto && userImage
+                (personalDetails?.profilePhoto && personalDetails?.profilePhoto !== "undefined" && userImage)
                   ? personalDetails?.profilePhoto
                   : file
                   ? URL.createObjectURL(file)

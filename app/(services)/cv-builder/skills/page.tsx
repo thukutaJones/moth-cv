@@ -7,7 +7,7 @@ import { FaPlus } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import AddSkillModal from "@/components/AddSkillModal";
-import { getUserIdFromCookie } from "@/constants/getUserId";
+import { getUserId } from "@/constants/getUserId";
 
 const Skills = () => {
   const [addSkillToggle, setAddSkillToggle] = useState<boolean>(false);
@@ -21,9 +21,15 @@ const Skills = () => {
   const fetchSkills = async () => {
     try {
       setIsFetchingData(true);
-      const userId = await getUserIdFromCookie()
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token)
       const res = await axios.get(
-        `${baseUrl}/api/cv-details/skills/${userId}`
+        `${baseUrl}/api/cv-details/skills/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       setSkills(res?.data?.skills?.skills || []);
     } catch (error) {
@@ -34,6 +40,14 @@ const Skills = () => {
   useEffect(() => {
     fetchSkills();
   }, []);
+
+  useEffect(() => {
+    const token: string = localStorage.getItem("moth-cv-token") || "";
+    if (!token) {
+      window.location.href = "/sign-in";  
+    }
+  }
+  , []);
 
   const handleNext = () => {
     router.push("/cv-builder/objective");
@@ -46,9 +60,15 @@ const Skills = () => {
   const handleDelete = async (skill: string) => {
     setIsDeleting(true);
     try {
-      const userId = await getUserIdFromCookie()
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token)
       await axios.delete(
-        `${baseUrl}/api/cv-details/skills/${userId}/${skill}`
+        `${baseUrl}/api/cv-details/skills/${userId}/${skill}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       fetchSkills();
     } catch (error: any) {

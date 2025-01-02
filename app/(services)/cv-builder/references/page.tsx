@@ -2,12 +2,12 @@
 
 import { baseUrl } from "@/constants/baseUrl";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import AddReferencesMdal from "@/components/AddReferenceModal";
-import { getUserIdFromCookie } from "@/constants/getUserId";
+import { getUserId } from "@/constants/getUserId";
 
 const References = () => {
   const [addReferenceToggle, setAddReferenceToggle] = useState<boolean>(false);
@@ -22,9 +22,15 @@ const References = () => {
   const fetchReferences = async () => {
     try {
       setIsFetchingData(true);
-      const userId = await getUserIdFromCookie();
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token);
       const res = await axios.get(
-        `${baseUrl}/api/cv-details/references/${userId}`
+        `${baseUrl}/api/cv-details/references/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       setReferences(res?.data?.references?.references || []);
     } catch (error) {
@@ -34,6 +40,13 @@ const References = () => {
   };
   useEffect(() => {
     fetchReferences();
+  }, []);
+
+  useEffect(() => {
+    const token: string = localStorage.getItem("moth-cv-token") || "";
+    if (!token) {
+      window.location.href = "/sign-in";
+    }
   }, []);
 
   const handleNext = () => {
@@ -47,9 +60,15 @@ const References = () => {
   const handleDelete = async (name: string, company: string, phone: string) => {
     setIsDeleting(true);
     try {
-      const userId = await getUserIdFromCookie();
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token);
       await axios.delete(
-        `${baseUrl}/api/cv-details/references/${userId}/${name}/${company}/${phone}`
+        `${baseUrl}/api/cv-details/references/${userId}/${name}/${company}/${phone}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       fetchReferences();
     } catch (error: any) {

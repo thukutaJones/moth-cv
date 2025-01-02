@@ -8,7 +8,7 @@ import { FaPlay } from "react-icons/fa";
 import prompts from "@/constants/prompts";
 import Recorder from "@/components/Recorder";
 import { usePathname, useRouter } from "next/navigation";
-import { getUserIdFromCookie } from "@/constants/getUserId";
+import { getUserId } from "@/constants/getUserId";
 
 interface IMessage {
   role: string;
@@ -36,10 +36,16 @@ const Mock = () => {
       const activeAudio = new Audio("/active.mp3");
       activeAudio.play();
       setIsPrompting(true);
-      const userId = await getUserIdFromCookie()
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token)
       const res = await axios.post(
         `${baseUrl}/api/interview/initiate/${userId}`,
-        { prompt }
+        { prompt },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
 
       if ("speechSynthesis" in window) {
@@ -95,15 +101,16 @@ const Mock = () => {
     formData.append("audio", file);
 
     try {
-      const userId = await getUserIdFromCookie()
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token)
       const res = await axios.post(
         `${baseUrl}/api/interview/proceed/${userId}/${interviewId}`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true
+            Authorization: `Bearer ${token}`,
+          }
         }
       );
 
@@ -143,6 +150,13 @@ const Mock = () => {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [conversation]);
+
+  useEffect(() => { 
+    const token: string = localStorage.getItem("moth-cv-token") || "";
+    if (!token) {
+      router.replace("/sign-in");
+    }
+  }, []);
 
   return (
     <div className="w-full h-full flex flex-col items-center">

@@ -8,7 +8,7 @@ import { retriveUserData } from "@/constants/retriveUserData";
 import { deleteCookie } from "@/constants/deleteCookie";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { getUserIdFromCookie } from "@/constants/getUserId";
+import { getUserId } from "@/constants/getUserId";
 import { baseUrl } from "@/constants/baseUrl";
 
 const Profile = () => {
@@ -21,7 +21,8 @@ const Profile = () => {
     setIsLoading(true);
     try {
       const fetchUser = async () => {
-        const user = await retriveUserData();
+        const token: string = localStorage.getItem("moth-cv-token") || "";
+        const user = await retriveUserData(token);
         setUser(user);
       };
       fetchUser();
@@ -34,7 +35,7 @@ const Profile = () => {
   const handleLogout = async () => {
     setIsLoading(true);
     try {
-      await deleteCookie();
+      localStorage.removeItem("moth-cv-token");
       router.replace("/sign-in");
     } catch (error) {
     } finally {
@@ -45,9 +46,15 @@ const Profile = () => {
   const handleDeleteAccount = async () => {
     setIsLoading(true);
     try {
-      const userId = await getUserIdFromCookie();
-      await axios.delete(`${baseUrl}/api/me/${userId}`);
-      await deleteCookie();await deleteCookie();
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token);
+      await axios.delete(`${baseUrl}/api/me/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      await deleteCookie();
+      await deleteCookie();
       router.replace("/sign-in");
     } catch (error) {
     } finally {

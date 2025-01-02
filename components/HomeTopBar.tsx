@@ -1,10 +1,21 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import HomeMobileMenu from "./HomeMobileMenu";
 import { retriveUserData } from "@/constants/retriveUserData";
+import { useEffect, useState } from "react";
 
-const HomeTopBar = async () => {
-  const user: any = await retriveUserData();
+const HomeTopBar = () => {
+  const [user, setUser] = useState<any>(null);
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const user: any = await retriveUserData(token);
+      setUser(user);
+    };
+    fetchUser();
+  }, []);
   return (
     <div className="w-full h-full flex justify-between items-center px-4 md:px-8 bg-white">
       <div className="flex flex-row gap-1 items-center ">
@@ -27,13 +38,19 @@ const HomeTopBar = async () => {
           <p className="text-white font-sans">Upgrade</p>
         </div>
         <Link href="/profile">
-          <Image
-            src={user?.profilePhoto}
-            width={80}
-            height={80}
-            alt="profile_photo"
-            className="h-12 w-12 rounded-full border-2 border-blue-500 cursor-pointer"
-          />
+        {
+          user?.profilePhoto ? (
+            <Image
+              src={user?.profilePhoto}
+              width={80}
+              height={80}
+              alt="profile_photo"
+              className="h-12 w-12 rounded-full border-2 border-blue-500 cursor-pointer"
+            />
+          ) : (
+            <div className="h-12 w-12 rounded-full border-2 border-blue-500 cursor-pointer flex items-center justify-center" />
+          )
+        }
         </Link>
       </div>
     </div>

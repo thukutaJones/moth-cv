@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const HomeCard = ({ data, index, about }: { data: any; index: number; about?:boolean; }) => {
@@ -11,9 +12,9 @@ const HomeCard = ({ data, index, about }: { data: any; index: number; about?:boo
       <div className="flex flex-col gap-1 w-full md:w-[55%] h-full items-start">
         <h3 className="text-xl text-black font-bold">{data?.title}</h3>
         <p className="font-sans">{data?.description}</p>
-        <button className={` ${about ? 'hidden' : ''} px-4 py-2 bg-blue-600 mt-6 rounded-lg`}>
+        <Link href='/sign-in' className={` ${about ? 'hidden' : ''} px-4 py-2 bg-blue-600 mt-6 rounded-lg`}>
           <p className="text-sm text-white font-sans">Check it out</p>
-        </button>
+        </Link>
       </div>
       <Image
         src={data?.image}

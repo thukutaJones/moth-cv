@@ -9,14 +9,14 @@ const Home = () => {
     <div className="mt-[80px]">
       <div className="w-full flex items-center justify-center p-4 md:p-16">
         <div className="w-full md:w-[50%] flex flex-col items-center justify-cenetr">
-          <p className="text-4xl text-black font-bold text-center animated  wow fadeInLeft">
+          <p className="text-4xl text-black font-bold text-center animated  wow fadeInDown">
             How do you want to grow your career?
           </p>
-          <p className="mt-4 text-center text-gray-600 text-sm font-sans animated  wow fadeInRight">
+          <p className="mt-4 text-center text-gray-600 text-sm font-sans animated  wow fadeIn">
             Land your dream job with MothCV's tailored job recommendations,
             professional resume builders, and interview prep tools.
           </p>
-          <Link href='/sign-in' className="px-4 py-2 bg-blue-600 mt-4 rounded-lg">
+          <Link href='/sign-in' className="px-4 py-2 bg-blue-600 mt-4 rounded-lg animated wow fadeInUp">
             <p className="font-sans">Get Started</p>
           </Link>
         </div>

@@ -1,11 +1,15 @@
 import axios from "axios";
 import { baseUrl } from "./baseUrl";
-import { getUserIdFromCookie } from "./getUserId";
+import { getUserId } from "./getUserId";
 
-const Templates = async () => {
+const Templates = async (token: string) => {
   try {
-    const userId = await getUserIdFromCookie();
-    const res = await axios.get(`${baseUrl}/api/cv-details/${userId}`);
+    const userId = await getUserId(token);
+    const res = await axios.get(`${baseUrl}/api/cv-details/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const {
       personalDetails,
       education,

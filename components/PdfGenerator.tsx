@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import axios from "axios";
 import Templates from "@/constants/templates";
@@ -20,7 +22,8 @@ const PdfGenerator = ({
         return;
       }
 
-      const templates = await Templates();
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const templates = await Templates(token);
       const htmlContent = templates[template as keyof typeof templates] || "";
 
       const response = await axios.post(

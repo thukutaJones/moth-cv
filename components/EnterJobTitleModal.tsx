@@ -21,11 +21,17 @@ const EnterJobTitle = ({
     setIsAdding(true);
     try {
       const payload = { jobTitle };
+      const token: string = localStorage.getItem("moth-cv-token") || "";
       const res = await axios.post(
         `${baseUrl}/api/cv-details/professional-summary/get/professional-summary`,
-        payload
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      
+
       callBack(res.data.professionalSummary);
       handleClose();
     } catch (error) {
@@ -38,7 +44,9 @@ const EnterJobTitle = ({
     <div className="absolute top-0 left-0 w-full h-full bg-white z-30 bg-opacity-90 flex items-center justify-center px-4">
       <div className="w-full md:w-[40%] bg-white p-8 shadow-lg rounded-lg max-h-[88%] overflow-y-auto scroll-container">
         <div className="w-full flex justify-between">
-          <p className="text-blue-600 font-bold font-sans">Generate professional summary</p>
+          <p className="text-blue-600 font-bold font-sans">
+            Generate professional summary
+          </p>
           <div
             className="bg-blue-600 p-1 rounded-full cursor-pointer"
             onClick={handleClose}

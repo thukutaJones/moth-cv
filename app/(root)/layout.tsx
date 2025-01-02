@@ -8,11 +8,11 @@ const RootLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <main className="min-h-screen flex flex-col">
+    <main className="min-h-screen flex flex-col overflow-auto scroll-container">
       <header>
         <TopBar />
       </header>
-      <div className="flex-grow">{children}</div>
+      <div className="flex-grow overflow-auto scroll-container">{children}</div>
       <footer>
         <Footer />
       </footer>

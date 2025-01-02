@@ -1,6 +1,15 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 
 const CVLatter = () => {
+  useEffect(() => {
+    const token: string = localStorage.getItem("moth-cv-token") || "";
+    if (!token) {
+      window.location.href = "/sign-in";
+    }
+  }, []);
+
   return (
     <div className="w-full h-full flex items-center justify-center bg-white">
       <div className="w-full">

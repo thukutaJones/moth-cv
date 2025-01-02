@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
-import { getUserIdFromCookie } from "@/constants/getUserId";
+import { getUserId } from "@/constants/getUserId";
 
 const WorkExperience = () => {
   const [addExperienceToggle, setAddExperienceToggle] =
@@ -23,9 +23,15 @@ const WorkExperience = () => {
   const fetchWorkExperience = async () => {
     try {
       setIsFetchingData(true);
-      const userId = await getUserIdFromCookie();
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token);
       const res = await axios.get(
-        `${baseUrl}/api/cv-details/work-experience/${userId}`
+        `${baseUrl}/api/cv-details/work-experience/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       setWorkExperiences(res?.data?.workExperience?.workExperience || []);
     } catch (error) {
@@ -36,6 +42,14 @@ const WorkExperience = () => {
   useEffect(() => {
     fetchWorkExperience();
   }, []);
+
+  useEffect(() => {
+    const token: string = localStorage.getItem("moth-cv-token") || "";
+    if (!token) {
+      window.location.href = "/sign-in";  
+    }
+  }
+  , []);
 
   const handleNext = () => {
     router.push("/cv-builder/education-background");
@@ -52,9 +66,15 @@ const WorkExperience = () => {
   ) => {
     setIsDeleting(true);
     try {
-      const userId = await getUserIdFromCookie();
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token);
       await axios.delete(
-        `${baseUrl}/api/cv-details/work-experience/${userId}/${jobTitle}/${company}/${startDate}`
+        `${baseUrl}/api/cv-details/work-experience/${userId}/${jobTitle}/${company}/${startDate}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       fetchWorkExperience();
     } catch (error: any) {

@@ -7,7 +7,7 @@ import { FaPlus } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import EducationModal from "@/components/EducationModal";
-import { getUserIdFromCookie } from "@/constants/getUserId";
+import { getUserId } from "@/constants/getUserId";
 
 const Education = () => {
   const [addEducationToggle, setAddEducationToggle] = useState<boolean>(false);
@@ -22,9 +22,15 @@ const Education = () => {
   const fetchEducationDetails = async () => {
     setIsFetchingData(true);
     try {
-      const userId = await getUserIdFromCookie();
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token);
       const res = await axios.get(
-        `${baseUrl}/api/cv-details/education/${userId}`
+        `${baseUrl}/api/cv-details/education/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       setEducationBackgrounds(res?.data?.education?.education || []);
     } catch (error) {
@@ -34,6 +40,13 @@ const Education = () => {
   };
   useEffect(() => {
     fetchEducationDetails();
+  }, []);
+
+  useEffect(() => {
+    const token: string = localStorage.getItem("moth-cv-token") || "";
+    if (!token) {
+      window.location.href = "/sign-in";
+    }
   }, []);
 
   const handleNext = () => {
@@ -51,9 +64,15 @@ const Education = () => {
   ) => {
     setIsDeleting(true);
     try {
-      const userId = await getUserIdFromCookie();
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token);
       await axios.delete(
-        `${baseUrl}/api/cv-details/education/${userId}/${degree}/${school}/${startDate}`
+        `${baseUrl}/api/cv-details/education/${userId}/${degree}/${school}/${startDate}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       fetchEducationDetails();
     } catch (error: any) {

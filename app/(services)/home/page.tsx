@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { LiaHandshake } from "react-icons/lia";
 import { TbFileDescription, TbFileCv } from "react-icons/tb";
 
@@ -6,15 +8,35 @@ import { interviewTips } from "@/constants/inteviewTips";
 import Link from "next/link";
 import { retriveUserData } from "@/constants/retriveUserData";
 
-const Home = async() => {
-  const colors = ['bg-gray-50', 'bg-green-50', 'bg-orange-50', 'bg-purple-50']
-  const user:any = await retriveUserData()
+const Home = () => {
+  const colors = ['bg-gray-50', 'bg-green-50', 'bg-orange-50', 'bg-purple-50'];
+  const [user, setUser] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const token: string = localStorage.getItem("moth-cv-token") || "";
+    if (!token) {
+      window.location.href = "/sign-in";
+    }
+    setIsLoading(true);
+    try {
+      const fetchUser = async () => {
+        const user: any = await retriveUserData(token);
+        setUser(user);
+      };
+      fetchUser()
+    } catch (error) {
+    } finally {
+      setIsLoading(false)
+    }
+  }, []);
+
   return (
     <div className="w-full bg-white px-6 py-4">
       <div className="md:flex items-center justify-between">
         <div>
           <h2 className="text-black font-sans font-bold text-2xl">
-            Hey, {user?.fullName?.split(" ")[0]} 👋!
+            Hey, {user?.fullName.split(" ")[0]} 👋!
           </h2>
           <p className="mt-1 text-sm font-sans text-gray-400">
             What would you like to do...
@@ -55,7 +77,7 @@ const Home = async() => {
       </p>
       <div className="w-full flex flex-col md:flex-row gap-4 flex-wrap flex-1 mt-4">
         {interviewTips?.map((tip: any, index: number) => (
-          <div className={`w-full md:w-[24%] animated  wow flash ${colors[Math.floor(Math.random() * 3) + 1]} p-4 min-h-40`} key={index?.toString()}>
+          <div className={`w-full md:w-[24%] animated wow flash ${colors[Math.floor(Math.random() * 3) + 1]} p-4 min-h-40`} key={index?.toString()}>
             <p className="text-sm text-black font-sans font-bold">{tip?.title}</p>
             {
               tip?.points?.map((point: string) => (
@@ -65,6 +87,11 @@ const Home = async() => {
           </div>
         ))}
       </div>
+      {isLoading && (
+        <div className="absolute top-0 left-0 z-40 w-full h-full bg-white bg-opacity-70 flex items-center justify-center ">
+          <div className="w-16 h-16 border-t-2 border-r-2 border-blue-600 rounded-full animate-spin" />
+        </div>
+      )}
     </div>
   );
 };

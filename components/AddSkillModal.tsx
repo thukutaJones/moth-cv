@@ -5,7 +5,7 @@ import { IoClose } from "react-icons/io5";
 import FormField from "./FormField";
 import axios from "axios";
 import { baseUrl } from "@/constants/baseUrl";
-import { getUserIdFromCookie } from "@/constants/getUserId";
+import { getUserId } from "@/constants/getUserId";
 
 const AddSkillModal = ({
   handleClose,
@@ -21,8 +21,17 @@ const AddSkillModal = ({
     e.preventDefault();
     setIsAdding(true);
     try {
-      const userId = await getUserIdFromCookie();
-      await axios.post(`${baseUrl}/api/cv-details/skills/${userId}`, { skill });
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token);
+      await axios.post(
+        `${baseUrl}/api/cv-details/skills/${userId}`,
+        { skill },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       await callBack();
       handleClose();
     } catch (error) {

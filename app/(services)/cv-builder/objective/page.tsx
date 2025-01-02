@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SiGooglegemini } from "react-icons/si";
 import EnterJobTitle from "@/components/EnterJobTitleModal";
-import { getUserIdFromCookie } from "@/constants/getUserId";
+import { getUserId } from "@/constants/getUserId";
 
 const ProfessionalSummary = () => {
   const [professionalSummary, setProfessionalSummary] = useState<string>("");
@@ -19,9 +19,15 @@ const ProfessionalSummary = () => {
   const fetchprofessionalSummary = async () => {
     try {
       setIsFetchingData(true);
-      const userId = await getUserIdFromCookie();
+      const token: string = localStorage.getItem("moth-cv-token") || "";
+      const userId = await getUserId(token);
       const res = await axios.get(
-        `${baseUrl}/api/cv-details/professional-summary/${userId}`
+        `${baseUrl}/api/cv-details/professional-summary/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       setProfessionalSummary(
         res?.data?.professionalSummary?.professionalSummary || ""
@@ -36,15 +42,28 @@ const ProfessionalSummary = () => {
     fetchprofessionalSummary();
   }, []);
 
+  useEffect(() => {
+    const token: string = localStorage.getItem("moth-cv-token") || "";
+    if (!token) {
+      window.location.href = "/sign-in";
+    }
+  }, []);
+
   const handleNext = async (e: any) => {
     e.preventDefault();
     setIsAdding(true);
-    const userId = await getUserIdFromCookie();
+    const token: string = localStorage.getItem("moth-cv-token") || "";
+    const userId = await getUserId(token);
     try {
       
       await axios.post(
         `${baseUrl}/api/cv-details/professional-summary/${userId}`,
-        {professionalSummary}
+        {professionalSummary},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       router.push("/cv-builder/references");
     } catch (error) {

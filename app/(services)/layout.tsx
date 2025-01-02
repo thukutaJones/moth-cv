@@ -14,7 +14,7 @@ const SrvicesLayout = ({
       </header>
       <section className="flex h-[calc(100vh-80px)] mt-[60px] w-full">
         <SideBar />
-        <div className="overflow-y-auto w-full md:w-[95%]">{children}</div>
+        <div className="overflow-y-auto w-full md:w-[95%] scroll-container">{children}</div>
       </section>
     </main>
   );

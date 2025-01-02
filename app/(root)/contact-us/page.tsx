@@ -60,7 +60,7 @@ const Contact = () => {
           </div>
         </div>
       </section>
-      <section className="w-full md:w-[40%] mt-8 md:mt-0 animated  wow fadeInRight">
+      <section className="w-full md:w-[40%] mt-8 md:mt-0 animated  wow fadeInUp">
         <form
           onSubmit={handleSubmit}
           className="w-full bg-white p-4 border border-gray-50 shadow-xl rounded-xl"

@@ -9,7 +9,7 @@ const AboutUs = () => {
       <div className="h-[20vh] md:h-[40vh]">
         <div className="h-full w-full flex flex-col items-center justify-center">
           <h2 className="text-4xl font-bold text-gray-300 animated wow fadeInLeft">About Us</h2>
-          <p className="text-sm mt-4 font-sans text-gray-600 animated wow  fadeInRight">
+          <p className="text-sm mt-4 font-sans text-gray-600 animated wow  fadeInUp">
             Building Futures, One Resume at a Time
           </p>
         </div>
