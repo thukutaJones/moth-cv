@@ -44,7 +44,6 @@ const Signup = () => {
       };
       const res = await axios.post(`${baseUrl}/api/auth/sign-up`, payload);
       const { token } = res.data;
-      alert(token);
       localStorage.setItem("moth-cv-token", token);
       window.location.href = `/home`;
     } catch (error: any) {
