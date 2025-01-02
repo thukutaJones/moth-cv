@@ -1,1 +1,1 @@
-export const baseUrl = "https://moth-cv-4c768bf5b4ff.herokuapp.com";
+export const baseUrl = "http://localhost:7000";

@@ -49,6 +49,7 @@ const PdfGenerator = ({
       }
     } catch (error) {
       setPageError("Error exporting CV");
+      console.log(error);
     } finally {
       setIsGenerating(false);
     }
