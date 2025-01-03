@@ -13,22 +13,14 @@ export async function POST(req: NextRequest) {
       headless: chromium.headless,
     });
 
-    console.log("Browser launched");
-
     const page = await browser.newPage();
-    console.log("New page created");
-
     await page.setContent(htmlContent, { waitUntil: "load" });
-    console.log("HTML content set");
-
     const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
     });
-    console.log("PDF generated");
 
     await browser.close();
-    console.log("Browser closed");
 
     return new NextResponse(pdfBuffer, {
       status: 200,

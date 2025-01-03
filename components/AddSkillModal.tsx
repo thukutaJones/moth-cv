@@ -56,7 +56,7 @@ const AddSkillModal = ({
           <FormField
             wid="w-full mt-2"
             title="Skill"
-            placeholder="Team player"
+            placeholder="enter skill"
             value={skill}
             handleChangeText={(event: any) => setSkill(event.target.value)}
           />

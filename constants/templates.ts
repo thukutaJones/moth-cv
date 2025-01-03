@@ -16,8 +16,20 @@ const Templates = async (token: string) => {
       references,
       skills,
       workExperience,
-      proffessinalSummary,
+      professionalSummary,
     } = res?.data?.details;
+
+    function formatMalawianPhoneNumber(phoneNumber: string) {
+      const cleaned = phoneNumber.replace(/\D/g, "");
+      if (cleaned.length === 10 && (cleaned.startsWith("09") || cleaned.startsWith("08"))) {
+        return cleaned.replace(/(\d{2})(\d{3})(\d{4})/, "$1 $2 $3");
+      } else if (cleaned.length === 12 && cleaned.startsWith("265")) {
+        return cleaned.replace(/265(\d{3})(\d{3})(\d{3})/, "+265 $1 $2 $3");
+      } else {
+        return phoneNumber;
+      }
+    }
+    
 
     const template_6 = `
     <!DOCTYPE html>
@@ -32,8 +44,8 @@ const Templates = async (token: string) => {
             }
             
             .text {
-                font-size: 11pt;
-                font-family: Arial;
+                font-family: Helvetica;
+                font-size: 12pt;
             }
 
             .hr {
@@ -74,9 +86,9 @@ const Templates = async (token: string) => {
                                     }
                                 </div>
                                 ${
-                                  personalDetails?.pic
+                                  personalDetails?.profilePhoto
                                     ? `
-                                            <img src="${personalDetails?.pic}" height="120px" width="120px" style="border-radius: 100%; margin-left: 10pt;" />
+                                            <img src="${personalDetails?.profilePhoto}" height="120px" width="120px" style="border-radius: 100%; margin-left: 10pt;" />
                                         `
                                     : ""
                                 }
@@ -100,7 +112,7 @@ const Templates = async (token: string) => {
                                                 <p class="text" style="font-weight: 800;">Cellphone</p>
                                                 <p style="margin-right: 20px;">:</p>
                                             </div>
-                                            <p class="text">${personalDetails?.phone}</p>
+                                            <p class="text">${formatMalawianPhoneNumber(personalDetails?.phone)}</p>
                                         </div>`
                                     : ""
                                 }
@@ -132,14 +144,14 @@ const Templates = async (token: string) => {
                 : ""
             }
             ${
-              proffessinalSummary
+              professionalSummary
                 ? `<div style="margin-top: 10pt;">
                         <h2 class="subHeading">
                             <b>OBJECTIVE</b>
                             <hr class="hr">
                         </h2>
                         <p class="text" style="margin-top: -5pt; line-height: 1.2;">
-                            ${proffessinalSummary}
+                            ${professionalSummary}
                         </p>
                     </div>`
                 : ""
@@ -232,7 +244,7 @@ const Templates = async (token: string) => {
                                 ?.slice(4)})</p>
                                     </div>
                                 </div>
-                                <div style="margin-top: -15pt; line-height: 0.5; margin-bottom: 25pt;">
+                                <div style="margin-top: -15pt; line-height: 1.2; margin-bottom: 25pt;">
                                     <div class="avoid-page-break"><p><b>Description:</b></p></div>
                                         ${
                                           workDetail?.jobDescription
@@ -240,7 +252,7 @@ const Templates = async (token: string) => {
                                                 ?.split("\n")
                                                 ?.map(
                                                   (detail: any) =>
-                                                    `<div class="avoid-page-break"><p class="text">${detail}</p></div>`
+                                                    `<div class="avoid-page-break" style="margin-top: -3pt;"><p class="text">${detail}</p></div>`
                                                 )
                                                 .join("")
                                             : ""
@@ -291,7 +303,7 @@ const Templates = async (token: string) => {
                                     }
                                     ${
                                       reference?.phone
-                                        ? `<p style="margin-top: -10pt;" class="text">CELL: ${reference?.phone}</p>`
+                                        ? `<p style="margin-top: -10pt;" class="text">CELL: ${formatMalawianPhoneNumber(reference?.phone)}</p>`
                                         : ""
                                     }
                                 </div>
@@ -348,7 +360,7 @@ const Templates = async (token: string) => {
                                     ${
                                       personalDetails?.phone
                                         ? `<div style="display: flex; flex-direction: row;  align-items: center;">
-                                                <p style="font-size: 10pt; font-weight: 800; font-family: Arial;">${personalDetails?.phone}</p>
+                                                <p style="font-size: 10pt; font-weight: 800; font-family: Arial;">${formatMalawianPhoneNumber(personalDetails?.phone)}</p>
                                             </div>`
                                         : ""
                                     }
@@ -374,16 +386,16 @@ const Templates = async (token: string) => {
                         }
                     </div>
                     ${
-                      proffessinalSummary || personalDetails?.pic
+                      professionalSummary || personalDetails?.profilePhoto
                         ? `<div style="display: flex; flex-direction: row; justify-content: space-between; align-items: start; margin-top: -20pt;">
                                 ${
-                                  proffessinalSummary
-                                    ? `<p class="text" style="line-height: 1.2;">${proffessinalSummary}</p>`
+                                  professionalSummary
+                                    ? `<p class="text" style="line-height: 1.2;">${professionalSummary}</p>`
                                     : ""
                                 }
                                 ${
-                                  personalDetails?.pic
-                                    ? `<img src="${personalDetails?.pic}" height="120px" width="120px" style="border-radius: 100%; margin-left: 10pt;" />`
+                                  personalDetails?.profilePhoto
+                                    ? `<img src="${personalDetails?.profilePhoto}" height="120px" width="120px" style="border-radius: 100%; margin-left: 10pt;" />`
                                     : ""
                                 }
                             </div>`
@@ -412,9 +424,9 @@ const Templates = async (token: string) => {
                                 ${
                                   personalDetails?.phone
                                     ? `<div class="text" style="display: flex; flex-direction: row; margin-top: -15pt; align-items: flex-start;">
-                                            <b><p class="text" style="line-height: 1;">Phone Number:</p></b> 
+                                            <b><p class="text" style="line-height: 1;">Cell:</p></b> 
                                             <p style="line-height: 1; margin-left: 10pt;" class="text">
-                                                ${personalDetails?.phone}
+                                                ${formatMalawianPhoneNumber(personalDetails?.phone)}
                                             </p>
                                         </div>`
                                     : ""
@@ -432,7 +444,7 @@ const Templates = async (token: string) => {
                                     ${
                                       personalDetails?.nationality
                                         ? `<div class="text" style="display: flex; flex-direction: row; margin-top: -15pt; align-items: flex-start;">
-                                        <b><p class="text" style="line-height: 1;">Nationality:</p></b> 
+                                        <b><p class="text" style="line-height: 1.2;">Nationality:</p></b> 
                                         <p style="line-height: 1; margin-left: 10pt;" class="text">
                                             ${personalDetails?.nationality}
                                         </p>
@@ -513,7 +525,7 @@ const Templates = async (token: string) => {
                                             </div>
                                                 ${
                                                   workDetail?.jobDescription
-                                                    ? `<ul id="skills" style="margin-top: -2pt;">
+                                                    ? `<ul style="margin-top: -2pt; line-height: 1.5;">
                                                             ${workDetail?.jobDescription
                                                               ?.split("\n")
                                                               ?.map(
@@ -580,7 +592,7 @@ const Templates = async (token: string) => {
                                                 }
                                                 ${
                                                   reference?.phone
-                                                    ? `<div class="avoid-page-break"><p class="text" style="margin-top: -10pt;">CELL: ${reference?.phone}</p></div>`
+                                                    ? `<div class="avoid-page-break"><p class="text" style="margin-top: -10pt;">CELL: ${formatMalawianPhoneNumber(reference?.phone)}</p></div>`
                                                     : ""
                                                 }
                                             </div>
@@ -609,7 +621,7 @@ const Templates = async (token: string) => {
             }
             
             .text {
-                font-size: 11pt;
+                font-size: 12pt;
                 font-family: Arial;
             }
 
@@ -642,9 +654,9 @@ const Templates = async (token: string) => {
                         <div style="line-height: 0;">
                             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                                     ${
-                                      personalDetails?.pic
+                                      personalDetails?.profilePhoto
                                         ? `
-                                                <img src="${personalDetails?.pic}" height="120px" width="120px" style="border-radius: 100%; align-self: center;"/>
+                                                <img src="${personalDetails?.profilePhoto}" height="120px" width="120px" style="border-radius: 100%; align-self: center;"/>
                                             `
                                         : ""
                                     }
@@ -673,7 +685,7 @@ const Templates = async (token: string) => {
                                     ? `<div class="text" style="display: flex; flex-direction: row; margin-top: -15pt; align-items: flex-start;">
                                             <b><p class="text" style="line-height: 1;">Phone Number:</p></b> 
                                             <p style="line-height: 1; margin-left: 10pt;" class="text">
-                                                ${personalDetails?.phone}
+                                                ${formatMalawianPhoneNumber(personalDetails?.phone)}
                                             </p>
                                         </div>`
                                     : ""
@@ -704,14 +716,14 @@ const Templates = async (token: string) => {
                 : ""
             }
             ${
-              proffessinalSummary
+              professionalSummary
                 ? `<div style="margin-top: 10pt;">
                         <div class="avoid-page-break"><h2 class="subHeading">
                             <b>OBJECTIVE</b>
                             <hr class="hr">
                         </h2></div>
                         <div class="avoid-page-break"><p class="text" style="margin-top: -5pt;">
-                            ${proffessinalSummary}
+                            ${professionalSummary}
                         </p></div>
                     </div>`
                 : ""
@@ -804,7 +816,7 @@ const Templates = async (token: string) => {
                                 ?.slice(4)})</p>
                                     </div>
                                 </div>
-                                <div style="margin-top: -10pt; line-height: 0.5; margin-bottom: 20pt;">
+                                <div style="margin-top: -10pt; line-height: 1.2; margin-bottom: 20pt;">
                                     <div class="avoid-page-break"><p><b>Description:</b></p></div>
                                         ${
                                           workDetail?.jobDescription
@@ -865,7 +877,7 @@ const Templates = async (token: string) => {
                                     }
                                     ${
                                       reference?.phone
-                                        ? `<p style="margin-top: -10pt;">CELL: ${reference?.phone}</p>`
+                                        ? `<p style="margin-top: -10pt;">CELL: ${formatMalawianPhoneNumber(reference?.phone)}</p>`
                                         : ""
                                     }
                                 </div>
@@ -897,7 +909,7 @@ const Templates = async (token: string) => {
                 }
                 .text {
                     font-family: Arial;
-                    font-size: 11pt;
+                    font-size: 12pt;
                 }
                 
                 #skills {
@@ -911,13 +923,13 @@ const Templates = async (token: string) => {
             <body>
                 <div style="margin-left: 5%; margin-right: 5%">
                 ${
-                  proffessinalSummary ||
-                  personalDetails?.pic ||
+                  professionalSummary ||
+                  personalDetails?.profilePhoto ||
                   personalDetails?.fullName
                     ? `<div style="display: flex; flex-direction: row; align-items: end; justify-content: baseline; margin-bottom: 20pt;">
                                 ${
-                                  personalDetails.pic
-                                    ? `<img src="${personalDetails.pic}" height="400px" width="45%"/>`
+                                  personalDetails.profilePhoto
+                                    ? `<img src="${personalDetails.profilePhoto}" height="400px" width="45%"/>`
                                     : ""
                                 }
                                 <div style="padding: 10px; background-color: rgba(0, 0, 0, 0.1); width: 100%">
@@ -927,12 +939,12 @@ const Templates = async (token: string) => {
                                         : ""
                                     }
                                     ${
-                                      proffessinalSummary
+                                      professionalSummary
                                         ? `<h2 class="bg" style="padding: 5px;">
                                             <hr style="background-color: black; height: 1pt;">
                                             <b>OBJECTIVE</b>
                                         </h2>
-                                        <p class="text" style="margin-top: -10pt;">${proffessinalSummary}</p>`
+                                        <p class="text" style="margin-top: -10pt; line-height: 1.2;">${professionalSummary}</p>`
                                         : ""
                                     }
                                 </div>
@@ -966,7 +978,7 @@ const Templates = async (token: string) => {
                                     ? `<div class="text" style="display: flex; flex-direction: row; margin-top: -15pt; align-items: flex-start;">
                                             <b><p class="text" style="line-height: 1;">Phone Number:</p></b> 
                                             <p style="line-height: 1; margin-left: 10pt;" class="text">
-                                                ${personalDetails.phone}
+                                                ${formatMalawianPhoneNumber(personalDetails.phone)}
                                             </p>
                                         </div>`
                                     : ""
@@ -1080,7 +1092,7 @@ const Templates = async (token: string) => {
                                             </div>
                                                 ${
                                                   workDetail?.jobDescription
-                                                    ? `<ul id="skills" style="margin-top: -5pt;">
+                                                    ? `<ul id="skills" style="margin-top: -5pt; line-height: 1.2;">
                                                             ${workDetail?.jobDescription
                                                               ?.split("\n")
                                                               ?.map(
@@ -1150,7 +1162,7 @@ const Templates = async (token: string) => {
                                                 }
                                                 ${
                                                   reference?.phone
-                                                    ? `<div class="avoid-page-break"><p style="margin-top: -10pt;" class="text">CELL: ${reference?.phone}</p></div>`
+                                                    ? `<div class="avoid-page-break"><p style="margin-top: -10pt;" class="text">CELL: ${formatMalawianPhoneNumber(reference?.phone)}</p></div>`
                                                     : ""
                                                 }
                                             </div>
@@ -1200,8 +1212,8 @@ const Templates = async (token: string) => {
             <body>
                 <div style="margin-right: 5%">
                 ${
-                  proffessinalSummary ||
-                  personalDetails?.pic ||
+                  professionalSummary ||
+                  personalDetails?.profilePhoto ||
                   personalDetails?.fullName ||
                   personalDetails?.profession
                     ? `<div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;"> 
@@ -1223,8 +1235,8 @@ const Templates = async (token: string) => {
                                     </div>
                                 </div>
                                 ${
-                                  personalDetails?.pic
-                                    ? `<img src="${personalDetails?.pic}" height="120px" width="120px" style="border-radius: 100%;" />`
+                                  personalDetails?.profilePhoto
+                                    ? `<img src="${personalDetails?.profilePhoto}" height="120px" width="120px" style="border-radius: 100%;" />`
                                     : ""
                                 }
                         </div>`
@@ -1234,9 +1246,9 @@ const Templates = async (token: string) => {
                 </div>
                 <div style="margin-left: 5%; margin-right: 5%">
                     ${
-                      proffessinalSummary
-                        ? `<div style="border:groove; border-color: rgb(27, 35, 204); padding: 10px; margin-bottom: 20px;">
-                                <p class="text"">${proffessinalSummary}</p>
+                      professionalSummary
+                        ? `<div style="border:groove; border-color: rgb(27, 35, 204); padding: 10px; margin-bottom: 20px; line-height: 1.2;">
+                                <p class="text"">${professionalSummary}</p>
                             </div>`
                         : ""
                     }
@@ -1263,9 +1275,9 @@ const Templates = async (token: string) => {
                                 ${
                                   personalDetails?.phone
                                     ? `<div class="text" style="display: flex; flex-direction: row; margin-top: -15pt; align-items: flex-start;">
-                                            <b><p class="text" style="line-height: 1;">Phone Number:</p></b> 
+                                            <b><p class="text" style="line-height: 1;">Cell:</p></b> 
                                             <p style="line-height: 1; margin-left: 10pt;" class="text">
-                                                ${personalDetails?.phone}
+                                                ${formatMalawianPhoneNumber(personalDetails?.phone)}
                                             </p>
                                         </div>`
                                     : ""
@@ -1324,11 +1336,11 @@ const Templates = async (token: string) => {
                                     ${education
                                       ?.map(
                                         (educationDetail: any) =>
-                                          `<div style="margin-top: -5pt; line-height: 1;">
-                                                <div class="avoid-page-break"><h3 class="text">
-                                                    <b>${
+                                          `<div style="margin-top: -5pt; line-height: 1.2;">
+                                                <div class="avoid-page-break"><h3 class="text" style="font-weight: normal;">
+                                                    ${
                                                       educationDetail?.degree
-                                                    }</b>
+                                                    }
                                                 </h3></div>
                                                 <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: -20pt;">
                                                     <div class="avoid-page-break">
@@ -1414,7 +1426,7 @@ const Templates = async (token: string) => {
                                       `<div>
                                             ${
                                               reference?.name
-                                                ? `<div class="avoid-page-break"><p>${
+                                                ? `<div class="avoid-page-break"><p class="text">${
                                                     reference?.name
                                                   } ${`${
                                                     reference?.jobTitle
@@ -1425,7 +1437,7 @@ const Templates = async (token: string) => {
                                             }
                                             ${
                                               reference?.company
-                                                ? `<div class="avoid-page-break"><p style="margin-top: -10pt;">${reference?.company}</p></div>`
+                                                ? `<div class="avoid-page-break"><p style="margin-top: -10pt;" class="text">${reference?.company}</p></div>`
                                                 : ""
                                             }
                                             ${
@@ -1434,7 +1446,7 @@ const Templates = async (token: string) => {
                                                     ?.split(",")
                                                     ?.map(
                                                       (line: any) =>
-                                                        `<div class="avoid-page-break"><p style="margin-top: -10pt;">${line}</p></div>`
+                                                        `<div class="avoid-page-break"><p style="margin-top: -10pt;" class="text">${line}</p></div>`
                                                     )
                                                     .join("")
                                                 : ""
@@ -1442,12 +1454,12 @@ const Templates = async (token: string) => {
                                             <div style="margin-top: -5pt;" style="margin-bottom: 5pt;">
                                                 ${
                                                   reference?.email
-                                                    ? `<div class="avoid-page-break"><p>E-mail: ${reference.email}</p></div>`
+                                                    ? `<div class="avoid-page-break"><p class="text">E-mail: ${reference.email}</p></div>`
                                                     : ""
                                                 }
                                                 ${
                                                   reference?.phone
-                                                    ? `<div class="avoid-page-break"><p style="margin-top: -10pt;">CELL: ${reference?.phone}</p></div>`
+                                                    ? `<div class="avoid-page-break"><p style="margin-top: -10pt;" class="text">CELL: ${formatMalawianPhoneNumber(reference?.phone)}</p></div>`
                                                     : ""
                                                 }
                                             </div>
@@ -1491,7 +1503,7 @@ const Templates = async (token: string) => {
                 #skills {
                     margin-left: 13pt;
                     padding-left: 0;
-                    line-height: 1;
+                    line-height: 1.3;
                 }
             </style>
         </head>
@@ -1505,7 +1517,7 @@ const Templates = async (token: string) => {
                                     ${
                                       personalDetails?.phone
                                         ? `<div style="display: flex; flex-direction: row;  align-items: center;">
-                                                <p style="font-size: 10pt; font-weight: 800; font-family: Arial;">${personalDetails?.phone}</p>
+                                                <p style="font-size: 10pt; font-weight: 800; font-family: Arial;">${formatMalawianPhoneNumber(personalDetails?.phone)}</p>
                                             </div>`
                                         : ""
                                     }
@@ -1525,7 +1537,7 @@ const Templates = async (token: string) => {
                     <div>
                         ${
                           personalDetails?.fullName
-                            ? `<h1 class="text" style="font-size: 65px; font-weight: 800;">${personalDetails?.fullName}</h1>`
+                            ? `<h1 class="text" style="font-size: 50px; font-weight: 800;">${personalDetails?.fullName}</h1>`
                             : ""
                         }
                         ${
@@ -1537,16 +1549,16 @@ const Templates = async (token: string) => {
                         }
                     </div>
                     ${
-                      proffessinalSummary || personalDetails?.pic
+                      professionalSummary || personalDetails?.profilePhoto
                         ? `<div style="display: flex; flex-direction: row; justify-content: space-between; align-items: start; margin-top: -20pt;">
                                 ${
-                                  proffessinalSummary
-                                    ? `<p class="text" style="line-height: 1.2;">${proffessinalSummary}</p>`
+                                  professionalSummary
+                                    ? `<p class="text" style="line-height: 1.2;">${professionalSummary}</p>`
                                     : ""
                                 }
                                 ${
-                                  personalDetails?.pic
-                                    ? `<img src="${personalDetails?.pic}" height="120px" width="120px" style="border-radius: 100%; margin-left: 10pt;" />`
+                                  personalDetails?.profilePhoto
+                                    ? `<img src="${personalDetails?.profilePhoto}" height="120px" width="120px" style="border-radius: 100%; margin-left: 10pt;" />`
                                     : ""
                                 }
                             </div>`
@@ -1575,9 +1587,9 @@ const Templates = async (token: string) => {
                                 ${
                                   personalDetails?.phone
                                     ? `<div class="text" style="display: flex; flex-direction: row; margin-top: -15pt; align-items: flex-start;">
-                                            <b><p class="text" style="line-height: 1;">Phone Number:</p></b> 
+                                            <b><p class="text" style="line-height: 1;">Cell:</p></b> 
                                             <p style="line-height: 1; margin-left: 10pt;" class="text">
-                                                ${personalDetails?.phone}
+                                                ${formatMalawianPhoneNumber(personalDetails?.phone)}
                                             </p>
                                         </div>`
                                     : ""
@@ -1629,13 +1641,13 @@ const Templates = async (token: string) => {
                                     ${education
                                       ?.map(
                                         (educationDetail: any) =>
-                                          `<div style="margin-top: -5pt; line-height: 1;">
+                                          `<div style="margin-top: -5pt; line-height: 1.2;">
                                                 <div class="avoid-page-break"><p class="text">
                                                     <b>${
                                                       educationDetail?.degree
                                                     }</b>
                                                 </p></div>
-                                                <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: -20pt;">
+                                                <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: -15pt;">
                                                     <div class="avoid-page-break">
                                                         <p class="text">${educationDetail?.school?.toUpperCase()}</p>
                                                     </div>
@@ -1659,7 +1671,7 @@ const Templates = async (token: string) => {
                                       ?.map(
                                         (workDetail: any) =>
                                           `
-                                            <div class="avoid-page-break">
+                                            <div class="avoid-page-break" style="margin-top: 5pt;">
                                                 <p style="font-family: Helvetica;"><b>${
                                                   workDetail?.jobTitle
                                                 }</b> - ${new Date(
@@ -1677,7 +1689,7 @@ const Templates = async (token: string) => {
                                             </div>
                                                 ${
                                                   workDetail?.jobDescription
-                                                    ? `<ul id="skills" style="margin-top: -5pt;">
+                                                    ? `<ul style="margin-top: -3pt; line-height: 1.5;">
                                                             ${workDetail?.jobDescription
                                                               ?.split("\n")
                                                               .map(
@@ -1744,7 +1756,7 @@ const Templates = async (token: string) => {
                                                 }
                                                 ${
                                                   reference?.phone
-                                                    ? `<div class="avoid-page-break"><p class="text" style="margin-top: -10pt;">CELL: ${reference?.phone}</p></div>`
+                                                    ? `<div class="avoid-page-break"><p class="text" style="margin-top: -10pt;">CELL: ${formatMalawianPhoneNumber(reference?.phone)}</p></div>`
                                                     : ""
                                                 }
                                             </div>
@@ -1787,7 +1799,7 @@ const Templates = async (token: string) => {
                 #skills {
                     margin-left: 13pt;
                     padding-left: 0;
-                    line-height: 1;
+                    line-height: 1.2;
                 }
             </style>
         </head>
@@ -1801,7 +1813,7 @@ const Templates = async (token: string) => {
                                     ${
                                       personalDetails?.phone
                                         ? `<div style="display: flex; flex-direction: row;  align-items: center;">
-                                                <p style="font-size: 10pt; font-weight: 800; font-family: Arial;">${personalDetails?.phone}</p>
+                                                <p style="font-size: 10pt; font-weight: 800; font-family: Arial;">${formatMalawianPhoneNumber(personalDetails?.phone)}</p>
                                             </div>`
                                         : ""
                                     }
@@ -1833,16 +1845,16 @@ const Templates = async (token: string) => {
                         }
                     </div>
                     ${
-                      proffessinalSummary || personalDetails?.pic
+                      professionalSummary || personalDetails?.profilePhoto
                         ? `<div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-top: -20pt;">
                                 ${
-                                  proffessinalSummary
-                                    ? `<p class="text">${proffessinalSummary}</p>`
+                                  professionalSummary
+                                    ? `<p class="text" style="line-height: 1.2;">${professionalSummary}</p>`
                                     : ""
                                 }
                                 ${
-                                  personalDetails?.pic
-                                    ? `<img src="${personalDetails?.pic}" height="120px" width="120px" style="border-radius: 100%; margin-left: 10pt;" />`
+                                  personalDetails?.profilePhoto
+                                    ? `<img src="${personalDetails?.profilePhoto}" height="120px" width="120px" style="border-radius: 100%; margin-left: 10pt;" />`
                                     : ""
                                 }
                             </div>`
@@ -1871,9 +1883,9 @@ const Templates = async (token: string) => {
                                 ${
                                   personalDetails?.phone
                                     ? `<div class="text" style="display: flex; flex-direction: row; margin-top: -15pt; align-items: flex-start;">
-                                            <b><p class="text" style="line-height: 1;">Phone Number:</p></b> 
+                                            <b><p class="text" style="line-height: 1;">Celll:</p></b> 
                                             <p style="line-height: 1; margin-left: 10pt;" class="text">
-                                                ${personalDetails?.phone}
+                                                ${formatMalawianPhoneNumber(personalDetails?.phone)}
                                             </p>
                                         </div>`
                                     : ""
@@ -1981,7 +1993,7 @@ const Templates = async (token: string) => {
                                                                   description: any
                                                                 ) =>
                                                                   `<div class="avoid-page-break">
-                                                                        <li class="text" style="margin-top: 5pt;">${description?.slice(
+                                                                        <li class="text" style="margin-top: 5pt; line-height: 1.2;">${description?.slice(
                                                                           1
                                                                         )}</li>
                                                                     </div>`
@@ -2041,7 +2053,7 @@ const Templates = async (token: string) => {
                                                 }
                                                 ${
                                                   reference.phone
-                                                    ? `<div class="avoid-page-break"><p class="text" style="margin-top: -10pt;">CELL: ${reference?.phone}</p></div>`
+                                                    ? `<div class="avoid-page-break"><p class="text" style="margin-top: -10pt;">CELL: ${formatMalawianPhoneNumber(reference?.phone)}</p></div>`
                                                     : ""
                                                 }
                                             </div>
@@ -2106,9 +2118,9 @@ const Templates = async (token: string) => {
                         <div style="line-height: 0;">
                             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                                     ${
-                                      personalDetails.pic
+                                      personalDetails.profilePhoto
                                         ? `
-                                                <img src="${personalDetails.pic}" height="120px" width="120px" style="border-radius: 100%; align-self: center;"/>
+                                                <img src="${personalDetails.profilePhoto}" height="120px" width="120px" style="border-radius: 100%; align-self: center;"/>
                                             `
                                         : ""
                                     }
@@ -2145,7 +2157,7 @@ const Templates = async (token: string) => {
                                                             <p class="text" style="font-weight: 800;">Cell</p>
                                                             <p style="margin-right: 20px;" class="text">:</p>
                                                         </div>
-                                                        <p>${personalDetails?.phone}</p>
+                                                        <p>${formatMalawianPhoneNumber(personalDetails?.phone)}</p>
                                                     </div>`
                                                 : ""
                                             }
@@ -2193,13 +2205,13 @@ const Templates = async (token: string) => {
                 : ""
             }
             ${
-              proffessinalSummary
+              professionalSummary
                 ? `<div style="margin-top: 10pt;">
                         <div class="avoid-page-break"><h2 class="subHeading">
                             <b>CAREER SUMMARY</b>
                         </h2></div>
                         <div class="avoid-page-break"><p class="text" style="margin-top: -5pt;">
-                            ${proffessinalSummary}
+                            ${professionalSummary}
                         </p></div>
                     </div>`
                 : ""
@@ -2315,7 +2327,7 @@ const Templates = async (token: string) => {
                                 ${
                                   workDetail?.jobDescription
                                     ? `
-                                            <div style="margin-top: -10pt; line-height: 0.5; margin-bottom: 20pt;">
+                                            <div style="margin-top: -10pt; line-height: 1.2; margin-bottom: 20pt;">
                                                 <div class="avoid-page-break"><p><b>Description:</b></p></div>
                                                     ${
                                                       workDetail?.jobDescription
@@ -2380,7 +2392,7 @@ const Templates = async (token: string) => {
                                     }
                                     ${
                                       reference?.phone
-                                        ? `<p style="margin-top: -10pt;" class="text">CELL: ${reference?.phone}</p>`
+                                        ? `<p style="margin-top: -10pt;" class="text">CELL: ${formatMalawianPhoneNumber(reference?.phone)}</p>`
                                         : ""
                                     }
                                 </div>
@@ -2437,7 +2449,7 @@ const Templates = async (token: string) => {
                                     ${
                                       personalDetails?.phone
                                         ? `<div style="display: flex; flex-direction: row;  align-items: center;">
-                                                <p style="font-size: 10pt; font-weight: 800; font-family: Arial;">${personalDetails?.phone}</p>
+                                                <p style="font-size: 10pt; font-weight: 800; font-family: Arial;">${formatMalawianPhoneNumber(personalDetails?.phone)}</p>
                                             </div>`
                                         : ""
                                     }
@@ -2469,16 +2481,16 @@ const Templates = async (token: string) => {
                         }
                     </div>
                     ${
-                      proffessinalSummary || personalDetails?.pic
+                      professionalSummary || personalDetails?.profilePhoto
                         ? `<div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-top: -20pt;">
                                 ${
-                                  proffessinalSummary
-                                    ? `<p>${proffessinalSummary}</p>`
+                                  professionalSummary
+                                    ? `<p class="text">${professionalSummary}</p>`
                                     : ""
                                 }
                                 ${
-                                  personalDetails?.pic
-                                    ? `<img src="${personalDetails?.pic}" height="120px" width="120px" style="border-radius: 100%; margin-left: 10pt;" />`
+                                  personalDetails?.profilePhoto
+                                    ? `<img src="${personalDetails?.profilePhoto}" height="120px" width="120px" style="border-radius: 100%; margin-left: 10pt;" />`
                                     : ""
                                 }
                             </div>`
@@ -2508,9 +2520,9 @@ const Templates = async (token: string) => {
                                 ${
                                   personalDetails?.phone
                                     ? `<div class="text" style="display: flex; flex-direction: row; margin-top: -15pt; align-items: flex-start;">
-                                            <b><p class="text" style="line-height: 1;">Phone Number:</p></b> 
+                                            <b><p class="text" style="line-height: 1;">Cell:</p></b> 
                                             <p style="line-height: 1; margin-left: 10pt;" class="text">
-                                                ${personalDetails?.phone}
+                                                ${formatMalawianPhoneNumber(personalDetails?.phone)}
                                             </p>
                                         </div>
                                         `
@@ -2611,8 +2623,8 @@ const Templates = async (token: string) => {
                                             </div>
                                                 ${
                                                   workDetail?.jobDescription
-                                                    ? `<ul id="skills" style="margin-top: -5pt;">
-                                                            ${workDetail?.description
+                                                    ? `<ul id="skills" style="margin-top: -5pt; line-height: 1.2;">
+                                                            ${workDetail?.jobDescription
                                                               ?.split("\n")
                                                               ?.map(
                                                                 (
@@ -2678,7 +2690,7 @@ const Templates = async (token: string) => {
                                                 }
                                                 ${
                                                   reference?.phone
-                                                    ? `<div class="avoid-page-break"><p class="text" style="margin-top: -10pt;">CELL: ${reference?.phone}</p></div>`
+                                                    ? `<div class="avoid-page-break"><p class="text" style="margin-top: -10pt;">CELL: ${formatMalawianPhoneNumber(reference?.phone)}</p></div>`
                                                     : ""
                                                 }
                                             </div>

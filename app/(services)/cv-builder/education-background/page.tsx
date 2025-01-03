@@ -143,7 +143,7 @@ const Education = () => {
             </div>
           )}
           <div
-            className="border border-dotted border-blue-600 py-3 cursor-pointer hover:scale-110 flex gap-2 items-center justify-center text-blue-600 uppercase text-sm"
+            className="border border-dotted border-blue-600 py-3 cursor-pointer hover:scale-105 flex gap-2 items-center justify-center text-blue-600 uppercase text-sm"
             onClick={() => setAddEducationToggle(true)}
           >
             <FaPlus />

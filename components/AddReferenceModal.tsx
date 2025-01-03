@@ -74,7 +74,7 @@ const AddReferencesMdal = ({
           <FormField
             wid="w-full mt-4"
             title="Name"
-            placeholder="Mr Jones Thukuta"
+            placeholder="Mr John Doe"
             value={formValues?.name}
             handleChangeText={(event: any) =>
               setFormValues({
@@ -99,7 +99,7 @@ const AddReferencesMdal = ({
             wid="w-full mt-4"
             title="Phone"
             type="number"
-            placeholder="0888941871"
+            placeholder="+2658887142"
             value={formValues?.phone}
             handleChangeText={(event: any) =>
               setFormValues({
