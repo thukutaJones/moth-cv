@@ -31,6 +31,7 @@ const SignIn = () => {
       localStorage.setItem("moth-cv-token", token);
       window.location.href = `/home`;;
     } catch (error: any) {
+      alert(error)
       setFormError(
         error?.response?.data?.message ||
           "Something went wrong!! Please try again"
