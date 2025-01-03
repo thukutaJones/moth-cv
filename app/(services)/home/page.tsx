@@ -39,7 +39,7 @@ const Home = () => {
             Hey, {user?.fullName.split(" ")[0]} 👋!
           </h2>
           <p className="mt-1 text-sm font-sans text-gray-400">
-            What would you like to do...
+            What do you want to do...
           </p>
         </div>
         <div className="w-full md:w-[70%] mt-4 md:mt-0 md:flex justify-end gap-4 space-y-2 md:space-y-0 md:h-20">

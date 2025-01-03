@@ -10,7 +10,7 @@ const Home = () => {
       <div className="w-full flex items-center justify-center p-4 md:p-16">
         <div className="w-full md:w-[50%] flex flex-col items-center justify-cenetr">
           <p className="text-4xl text-black font-bold text-center animated  wow fadeInDown">
-            How do you want to grow your career?
+            Do you want to grow your career?
           </p>
           <p className="mt-4 text-center text-gray-600 text-sm font-sans animated  wow fadeIn">
             Land your dream job with MothCV's tailored job recommendations,

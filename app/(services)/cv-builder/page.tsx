@@ -149,7 +149,7 @@ const PersonalDetails = () => {
                 <FormField
                   wid="w-full md:w-[48%]"
                   title="Full name"
-                  placeholder="Jones Thukuta"
+                  placeholder="John Doe"
                   value={formValues.fullName}
                   handleChangeText={(event: any) =>
                     setFormValues({
@@ -176,7 +176,7 @@ const PersonalDetails = () => {
                 <FormField
                   wid="w-full md:w-[48%]"
                   title="Phone number"
-                  placeholder="0888941871"
+                  placeholder="+265888451871"
                   type="number"
                   value={formValues.phone}
                   handleChangeText={(event: any) =>
