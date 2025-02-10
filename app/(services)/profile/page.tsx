@@ -53,8 +53,7 @@ const Profile = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      await deleteCookie();
-      await deleteCookie();
+      localStorage.removeItem("moth-cv-token")
       router.replace("/sign-in");
     } catch (error) {
     } finally {
